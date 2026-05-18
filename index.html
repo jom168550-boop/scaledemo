@@ -1,1172 +1,1346 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCALEMEDIA | Growth that compounds</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* CSS resets and variables */
-        :root {
-            --bg: #080808;
-            --text-main: #f2ede6;
-            --text-muted: #444444;
-            --text-muted-light: #888888;
-            --accent: #c8ff00;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none;
-            /* Custom cursor */
-        }
-
-        html {
-            scroll-behavior: auto;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Ubuntu', sans-serif;
-            overflow-x: hidden;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        .syne {
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        /* Video Background */
-        #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        #bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(8, 8, 8, 0.75);
-            /* Dark overlay for typography contrast */
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 8px;
-            height: 8px;
-            background-color: var(--text-main);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
-            mix-blend-mode: difference;
-        }
-
-        .cursor.hovered {
-            width: 32px;
-            height: 32px;
-            background-color: var(--text-main);
-        }
-
-        /* Loader */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background-color: var(--bg);
-            z-index: 9998;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #loader .brand-text {
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 0.2em;
-            text-transform: capitalize;
-            display: flex;
-        }
-
-        #loader .brand-text span {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        #loader .progress {
-            width: 0%;
-            height: 1px;
-            background-color: var(--text-main);
-            margin-top: 1rem;
-            max-width: 200px;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 5vw;
-            z-index: 10;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            margin-bottom: 2rem;
-            text-transform: capitalize;
-        }
-
-        .hero h1 span {
-            display: block;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            font-weight: 300;
-            margin-bottom: 3rem;
-            opacity: 0;
-            max-width: 600px;
-            text-transform: capitalize;
-        }
-
-        .cta-link {
-            text-transform: capitalize;
-            display: inline-block;
-            position: relative;
-            padding-bottom: 4px;
-            font-size: 1.1rem;
-            opacity: 0;
-        }
-
-        .cta-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 1px;
-            background-color: var(--accent);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .cta-link:hover::after {
-            width: 100%;
-        }
-
-        .cta-link:hover {
-            color: var(--accent);
-        }
-
-        /* Scroll Narrative */
-        .narrative {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 0 5vw;
-            background-color: transparent;
-        }
-
-        .narrative-text {
-            font-size: clamp(2rem, 5vw, 4rem);
-            text-align: center;
-            font-family: 'Ubuntu', sans-serif;
-            text-transform: capitalize;
-            position: absolute;
-            opacity: 0;
-            clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
-            max-width: 900px;
-        }
-
-        /* Services Section */
-        .services {
-            padding: 10vw 5vw;
-            background: transparent;
-        }
-
-        .services-grid {
-            display: flex;
-            flex-direction: column;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .service-item {
-            padding: 2.5rem 0;
-            border-bottom: 1px solid rgba(242, 237, 230, 0.1);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .service-item:first-child {
-            border-top: 1px solid rgba(242, 237, 230, 0.1);
-        }
-
-        .service-item h3 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            text-transform: capitalize;
-            margin-bottom: 0.5rem;
-            transition: color 0.3s;
-        }
-
-        .service-item:hover h3 {
-            color: var(--accent);
-        }
-
-        .service-item p {
-            font-size: 1.1rem;
-            color: var(--text-muted-light);
-            font-weight: 300;
-            text-transform: capitalize;
-        }
-
-        /* Results Section */
-        .results {
-            padding: 10vw 5vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6rem;
-            background: transparent;
-        }
-
-        .stat {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
-        }
-
-        .stat-num {
-            font-size: clamp(4rem, 10vw, 8rem);
-            font-family: 'Ubuntu', sans-serif;
-            color: var(--text-main);
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-
-        .stat-label {
-            font-size: 1.1rem;
-            color: var(--text-muted-light);
-            text-transform: capitalize;
-        }
-
-        /* Process Section */
-        .process {
-            overflow: hidden;
-            padding: 10vw 0;
-            background: transparent;
-        }
-
-        .process-container {
-            display: flex;
-            width: max-content;
-            padding: 0 5vw;
-        }
-
-        .process-step {
-            width: 60vw;
-            min-width: 400px;
-            padding-right: 5vw;
-            flex-shrink: 0;
-        }
-
-        .process-step h4 {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            text-transform: capitalize;
-        }
-
-        .process-step p {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-family: 'Ubuntu', sans-serif;
-            line-height: 1.2;
-            text-transform: capitalize;
-        }
-
-        /* Team Section */
-        .team {
-            padding: 10vw 5vw;
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            background: transparent;
-        }
-
-        .team p {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-family: 'Ubuntu', sans-serif;
-            max-width: 900px;
-            text-transform: capitalize;
-            color: var(--text-muted-light);
-            line-height: 1.4;
-        }
-
-        .team p span {
-            color: var(--text-main);
-        }
-
-        /* Pricing Section */
-        .pricing {
-            padding: 120px 5vw;
-            background: transparent;
-        }
-
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .pricing-header h2 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            text-transform: capitalize;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-header p {
-            font-size: 1.1rem;
-            color: var(--text-muted-light);
-            text-transform: capitalize;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .pricing-card {
-            border: 1px solid rgba(242, 237, 230, 0.1);
-            padding: 3rem 2.5rem;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
-            position: relative;
-            background-color: rgba(8, 8, 8, 0.4);
-            backdrop-filter: blur(12px);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(242, 237, 230, 0.3);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-        }
-
-        .pricing-card.featured:hover {
-            border-color: var(--accent);
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--accent);
-            color: #000;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 500;
-            text-transform: capitalize;
-            letter-spacing: 0.05em;
-        }
-
-        .card-name {
-            font-size: 24px;
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-transform: capitalize;
-            color: var(--text-main);
-        }
-
-        .card-tag {
-            font-size: 13px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #999999;
-            margin-bottom: 2rem;
-            text-transform: capitalize;
-        }
-
-        .card-price {
-            font-size: 36px;
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 700;
-            margin-bottom: 2.5rem;
-            text-transform: capitalize;
-            color: var(--text-main);
-        }
-
-        .card-services {
-            list-style: none;
-            margin-bottom: 3rem;
-            flex-grow: 1;
-        }
-
-        .card-services li {
-            font-size: 14px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #bbbbbb;
-            margin-bottom: 1rem;
-            display: flex;
-            text-transform: capitalize;
-            line-height: 1.5;
-        }
-
-        .card-services li::before {
-            content: '—';
-            margin-right: 0.75rem;
-            color: #666;
-        }
-
-        .btn-pricing {
-            width: 100%;
-            padding: 1.25rem;
-            text-align: center;
-            border-radius: 30px;
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: capitalize;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--text-main);
-            cursor: none;
-        }
-
-        .btn-pricing:hover {
-            background-color: var(--text-main);
-            color: var(--bg);
-        }
-
-        .pricing-card.featured .btn-pricing {
-            background-color: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
-
-        .pricing-card.featured .btn-pricing:hover {
-            background-color: transparent;
-            color: var(--accent);
-        }
-
-        .pricing-footer {
-            text-align: center;
-            margin-top: 5rem;
-        }
-
-        .pricing-footer p {
-            color: var(--text-muted-light);
-            font-size: 14px;
-            margin-bottom: 1rem;
-            text-transform: capitalize;
-        }
-
-        .pricing-footer a {
-            color: var(--text-main);
-            text-decoration: underline;
-            text-decoration-color: var(--text-muted);
-            text-underline-offset: 6px;
-            font-size: 14px;
-            transition: color 0.3s;
-            text-transform: capitalize;
-        }
-
-        .pricing-footer a:hover {
-            color: var(--accent);
-            text-decoration-color: var(--accent);
-        }
-
-        /* Book A Call Section */
-        .book-call {
-            padding: 100px 5vw;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: transparent;
-        }
-
-        .book-call h2 {
-            font-size: clamp(3rem, 6vw, 5rem);
-            margin-bottom: 4rem;
-            text-transform: capitalize;
-        }
-
-        .contact-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 5rem;
-            align-items: center;
-        }
-
-        .contact-list a {
-            font-size: 15px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #aaaaaa;
-            text-transform: capitalize;
-            transition: color 0.3s;
-            display: inline-block;
-        }
-
-        .contact-list a:hover {
-            color: var(--text-main);
-        }
-
-        .btn-cta {
-            display: inline-block;
-            padding: 1.25rem 3.5rem;
-            border: 1px solid var(--text-main);
-            border-radius: 50px;
-            color: var(--text-main);
-            font-family: 'Ubuntu', sans-serif;
-            text-transform: capitalize;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-size: 1.1rem;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-cta:hover {
-            background-color: var(--text-main);
-            color: var(--bg);
-        }
-
-        /* New Contact Split Section */
-        .contact-split {
-            padding: 120px 5vw;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            background-color: transparent;
-        }
-
-        @media (max-width: 768px) {
-            .contact-split {
-                grid-template-columns: 1fr;
-                gap: 60px;
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+
+// --- CUSTOM HIGH-END INLINE SVG ICONS (Ensures self-contained robustness and prevents import mismatches) ---
+const CompassIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+  </svg>
+);
+
+const MegaphoneIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="m3 11 18-5v12L3 13v-2Z" />
+    <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+  </svg>
+);
+
+const PaletteIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.7255 3.09032 17.1962 4.85857 19C5.03458 19.176 5.09904 19.4312 5.02102 19.678C4.85859 20.1917 4.75 20.7303 4.75 21.25C4.75 21.6642 5.08579 22 5.5 22H12Z" />
+    <circle cx="7.5" cy="10.5" r="1.5" fill="currentColor" />
+    <circle cx="11.5" cy="7.5" r="1.5" fill="currentColor" />
+    <circle cx="16.5" cy="9.5" r="1.5" fill="currentColor" />
+  </svg>
+);
+
+const RocketIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M4.5 16.5c-1.5 1.26-2.5 3.19-2.5 5.5h20c0-2.31-1-4.24-2.5-5.5" />
+    <path d="M12 2C7.5 2 4 5.5 4 10c0 5 4 9 8 9s8-4 8-9c0-4.5-3.5-8-8-8Z" />
+    <path d="M12 6v6" />
+  </svg>
+);
+
+const VideoIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="m22 8-6 4 6 4V8Z" />
+    <rect width="14" height="12" x="2" y="6" rx="2" />
+  </svg>
+);
+
+const GlobeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+    <path d="M2 12h20" />
+  </svg>
+);
+
+const LaptopIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect width="20" height="14" x="2" y="3" rx="2" />
+    <line x1="8" x2="16" y1="21" y2="21" />
+    <line x1="12" x2="12" y1="17" y2="21" />
+  </svg>
+);
+
+const ChartLineIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M3 3v18h18" />
+    <path d="m19 9-5 5-4-4-3 3" />
+  </svg>
+);
+
+const ArrowRightIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="5" x2="19" y1="12" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
+
+const MailIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+
+const PhoneIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+  </svg>
+);
+
+const MenuIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="4" x2="20" y1="12" y2="12" />
+    <line x1="4" x2="20" y1="6" y2="6" />
+    <line x1="4" x2="20" y1="18" y2="18" />
+  </svg>
+);
+
+const XIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <line x1="18" x2="6" y1="6" y2="18" />
+    <line x1="6" x2="18" y1="6" y2="18" />
+  </svg>
+);
+
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.45L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.625 1.451 5.423.002 9.837-4.37 9.84-9.742.002-2.599-1.006-5.044-2.839-6.88C16.42 2.148 13.98 1.14 11.4 1.139 5.976 1.139 1.564 5.512 1.56 10.885c-.001 1.542.413 3.05 1.2 4.386l-.993 3.62 3.733-.974c1.282.725 2.682 1.11 4.147 1.113zM18.232 15c-.34-.17-2.01-.99-2.32-1.1-.312-.112-.54-.17-.768.17-.227.34-.879 1.1-.1.97-.227.112-.455.056-.795-.113-.34-.17-1.436-.53-2.735-1.687-1.01-.9-1.693-2.013-1.89-2.353-.198-.34-.022-.524.148-.693.153-.153.34-.397.51-.595.17-.198.227-.34.34-.567.113-.227.056-.425-.028-.595-.085-.17-.768-1.85-1.052-2.537-.278-.669-.56-.579-.768-.59-.199-.01-.426-.01-.653-.01-.227 0-.595.085-.907.425-.312.34-1.192 1.162-1.192 2.83 0 1.67 1.22 3.284 1.39 3.51.17.227 2.402 3.667 5.818 5.137.813.35 1.448.56 1.944.717.817.26 1.563.224 2.15.137.656-.1 2.01-.822 2.293-1.577.284-.755.284-1.402.199-1.537-.085-.136-.312-.224-.653-.393z" />
+  </svg>
+);
+
+const FacebookIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </svg>
+);
+
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+  </svg>
+);
+
+const YoutubeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.507 9.388.507 9.388.507s7.518 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
+);
+
+const StarIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
+// --- INTERACTIVE COUNT-UP COMPONENT (Triggers when scrolled into view) ---
+interface CounterProps {
+  end: number;
+  suffix?: string;
+  prefix?: string;
+  duration?: number;
+}
+
+const AnimatedCounter: React.FC<CounterProps> = ({ end, suffix = '', prefix = '', duration = 1500 }) => {
+  const [count, setCount] = useState(0);
+  const elementRef = useRef<HTMLSpanElement>(null);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          let startTime: number | null = null;
+          
+          const animate = (timestamp: number) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            setCount(Math.floor(progress * end));
+            
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              setCount(end);
             }
+          };
+          requestAnimationFrame(animate);
         }
+      },
+      { threshold: 0.1 }
+    );
 
-        .contact-left h2 {
-            font-size: clamp(3.5rem, 8vw, 5rem);
-            color: var(--text-main);
-            text-transform: capitalize;
-            margin: 0;
-            line-height: 1;
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [end, duration]);
+
+  return (
+    <span ref={elementRef} className="font-extrabold tracking-tight">
+      {prefix}{count}{suffix}
+    </span>
+  );
+};
+
+export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  
+  // Formspree state parameters (pointing to fully functional endpoint from reference / prev code)
+  const [formState, setFormState] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    business: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Trigger navbar blur overlay on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Set up reveal animation triggers on scroll
+  useEffect(() => {
+    const reveals = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      reveals.forEach((element) => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 80;
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active');
         }
+      });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    // Execute on initial mount
+    setTimeout(revealOnScroll, 100);
+    return () => window.removeEventListener('scroll', revealOnScroll);
+  }, []);
 
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 3rem;
-            opacity: 0;
-        }
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const element = document.querySelector(targetId);
+    if (element) {
+      const offset = 85;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
 
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 1rem 0;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(242, 237, 230, 0.3);
-            color: var(--text-main);
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-            text-transform: capitalize;
-        }
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
-        .contact-form textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormState({
+      ...formState,
+      [e.target.name]: e.target.value
+    });
+  };
 
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-bottom-color: var(--accent);
-        }
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-            color: var(--text-muted-light);
-        }
-
-        .contact-form .btn-cta {
-            margin-top: 1rem;
-            align-self: flex-start;
-            background: transparent;
-            cursor: none;
-        }
-
-        .contact-right {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .contact-label {
-            font-size: 12px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #777777;
-            text-transform: capitalize;
-            letter-spacing: 0.05em;
-        }
-
-        .contact-value {
-            font-size: 18px;
-            font-family: 'Ubuntu', sans-serif;
-            color: var(--text-main);
-            transition: color 0.2s ease;
-            text-transform: capitalize;
-        }
-
-        .contact-value:hover {
-            color: var(--accent);
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid rgba(242, 237, 230, 0.1);
-            padding: 32px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-            background: transparent;
-        }
-
-        @media (max-width: 768px) {
-            footer {
-                padding: 32px 5vw;
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        .footer-text {
-            font-size: 13px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #777777;
-            text-transform: capitalize;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 32px;
-        }
-
-        .footer-links a {
-            font-size: 13px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #777777;
-            transition: color 0.2s;
-            text-transform: capitalize;
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            color: var(--text-main);
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Video Background -->
-    <video autoplay loop muted playsinline id="bg-video">
-        <source
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
-            type="video/mp4">
-    </video>
-    <div id="bg-overlay"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-
-    <!-- Loader -->
-    <div id="loader">
-        <div class="brand-text" id="loader-text">
-            <span>s</span><span>c</span><span>a</span><span>l</span><span>e</span><span>m</span><span>e</span><span>d</span><span>i</span><span>a</span>
-        </div>
-        <div class="progress" id="loader-progress"></div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1 id="hero-headline">
-            <span class="hl-line">your content</span>
-            <span class="hl-line">isn't the problem.</span>
-            <span class="hl-line">your strategy is.</span>
-        </h1>
-        <p id="hero-subline">we fix the system behind your social media.</p>
-        <div>
-            <a href="#contact" class="cta-link" data-hover>let's talk &rarr;</a>
-        </div>
-    </section>
-
-    <!-- Scroll Narrative -->
-    <section class="narrative" id="narrative-section">
-        <div class="narrative-text n-beat">You're Posting Every Day</div>
-        <div class="narrative-text n-beat">And Getting Nothing Back</div>
-        <div class="narrative-text n-beat">Because Content Without Strategy Is Just Noise</div>
-        <div class="narrative-text n-beat" style="color: var(--accent)">Scalemedia builds the system that turns
-            attention into revenue</div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services">
-        <div class="services-grid">
-            <div class="service-item">
-                <h3>social media strategy</h3>
-                <p>data-driven roadmaps for growth</p>
-            </div>
-            <div class="service-item">
-                <h3>content production</h3>
-                <p>high-quality visuals and video</p>
-            </div>
-            <div class="service-item">
-                <h3>content writing</h3>
-                <p>captions, blogs, ad copy</p>
-            </div>
-            <div class="service-item">
-                <h3>content strategy</h3>
-                <p>what to post, when, and why</p>
-            </div>
-            <div class="service-item">
-                <h3>brand positioning</h3>
-                <p>stand out in crowded markets</p>
-            </div>
-            <div class="service-item">
-                <h3>paid ads (meta & google)</h3>
-                <p>scalable acquisition systems</p>
-            </div>
-            <div class="service-item">
-                <h3>seo</h3>
-                <p>search engine visibility</p>
-            </div>
-            <div class="service-item">
-                <h3>web design & development</h3>
-                <p>high-converting landing pages</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Results Section -->
-    <section class="results" id="results-section">
-        <div class="stat">
-            <div class="stat-num" data-target="10">0</div>
-            <div class="stat-label">average reach growth</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num" data-target="3x">0</div>
-            <div class="stat-label">avg engagement rate increase</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num" data-target="10+">0</div>
-            <div class="stat-label">brands scaled</div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section class="process" id="process-section">
-        <div class="process-container" id="process-container">
-            <div class="process-step">
-                <h4>step 1: audit</h4>
-                <p>we go deep into your brand</p>
-            </div>
-            <div class="process-step">
-                <h4>step 2: strategy</h4>
-                <p>we build the system</p>
-            </div>
-            <div class="process-step">
-                <h4>step 3: execute</h4>
-                <p>we create, publish, optimise</p>
-            </div>
-            <div class="process-step">
-                <h4>step 4: scale</h4>
-                <p>we push what works</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="team">
-        <p>scalemedia is a small team of strategists, creators, and media buyers obsessed with one thing — <span>growth
-                that compounds.</span></p>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing">
-        <div class="pricing-header">
-            <h2>simple pricing. serious results.</h2>
-            <p>no retainers that do nothing. pick the system that fits where you are.</p>
-        </div>
-
-        <div class="pricing-grid">
-            <!-- Card 1 -->
-            <div class="pricing-card">
-                <div class="card-name">starter</div>
-                <div class="card-tag">for brands just getting started</div>
-                <div class="card-price">₹5,000 / month</div>
-                <ul class="card-services">
-                    <li>brand positioning</li>
-                    <li>content strategy</li>
-                    <li>instagram management</li>
-                    <li>4 posts / reels per month</li>
-                    <li>basic growth setup</li>
-                    <li>1 content edit per week</li>
-                    <li>basic audience targeting</li>
-                    <li>monthly check-in call</li>
-                </ul>
-                <a href="#contact" class="btn-pricing" data-hover>get started &rarr;</a>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="pricing-card featured">
-                <div class="popular-badge">most popular</div>
-                <div class="card-name">growth</div>
-                <div class="card-tag">for brands ready to dominate</div>
-                <div class="card-price">₹11,999 / month</div>
-                <ul class="card-services">
-                    <li>everything in starter</li>
-                    <li>instagram + facebook management</li>
-                    <li>12–16 posts per month (6–8 reels + 6–8 creatives)</li>
-                    <li>advanced reel editing (hooks, trends, transitions)</li>
-                    <li>full content calendar & strategy</li>
-                    <li>niche research & competitor analysis</li>
-                    <li>engaging captions + strong CTAs</li>
-                    <li>custom hashtag strategy</li>
-                    <li>posting time optimisation</li>
-                    <li>basic comment management</li>
-                    <li>monthly performance report</li>
-                </ul>
-                <a href="#contact" class="btn-pricing" data-hover>let's scale &rarr;</a>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="pricing-card">
-                <div class="card-name">scale</div>
-                <div class="card-tag">for brands ready to dominate</div>
-                <div class="card-price">₹15,000+ / month</div>
-                <ul class="card-services">
-                    <li>everything in growth</li>
-                    <li>paid ads management (Meta — Instagram + Facebook)</li>
-                    <li>seo basics & on-page optimisation</li>
-                    <li>content writing (captions, blogs, ad copy)</li>
-                    <li>multi-platform social media strategy</li>
-                    <li>web landing page design (1 per quarter)</li>
-                    <li>weekly performance reporting & optimisation</li>
-                    <li>dedicated account strategist</li>
-                    <li>priority response & support</li>
-                </ul>
-                <a href="#contact" class="btn-pricing" data-hover>apply now &rarr;</a>
-            </div>
-        </div>
-
-        <div class="pricing-footer">
-            <p>all plans are month-to-month. no lock-in contracts.</p>
-            <a href="#contact" data-hover>not sure which plan? &rarr; book a free audit call</a>
-        </div>
-    </section>
-
-    <!-- Book A Call Section -->
-    <section class="book-call">
-        <h2>ready to scale?</h2>
-        <div class="contact-list">
-            <a href="mailto:scalemedia2214@gmail.com" data-hover>email — scalemedia2214@gmail.com</a>
-            <a href="tel:+917021850759" data-hover>call — +91 70218 50759</a>
-            <a href="https://wa.me/918591725750" data-hover target="_blank">whatsapp — +91 85917 25750</a>
-            <a href="https://www.instagram.com/scalemedia_1/" data-hover target="_blank">instagram — @scalemedia_1</a>
-        </div>
-        <a href="#contact" class="btn-cta" data-hover>book a call</a>
-    </section>
-
-    <!-- Contact Split Section -->
-    <section class="contact-split" id="contact">
-        <div class="contact-left">
-            <h2 id="split-title">let's talk.</h2>
-            <form action="https://formspree.io/f/mvzlwbgn" method="POST" class="contact-form" id="contact-form">
-                <input type="text" name="name" placeholder="your name" required data-hover>
-                <input type="email" name="email" placeholder="your email" required data-hover>
-                <textarea name="message" placeholder="how can we help?" required data-hover></textarea>
-                <button type="submit" class="btn-cta" data-hover>send message</button>
-            </form>
-        </div>
-        <div class="contact-right" id="split-details">
-            <div class="contact-item">
-                <span class="contact-label">email</span>
-                <a href="mailto:scalemedia2214@gmail.com" class="contact-value" data-hover>scalemedia2214@gmail.com</a>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">call us</span>
-                <a href="tel:+917021850759" class="contact-value" data-hover>+91 70218 50759</a>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">whatsapp</span>
-                <a href="https://wa.me/918591725750" class="contact-value" data-hover target="_blank">+91 85917
-                    25750</a>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">instagram</span>
-                <a href="https://www.instagram.com/scalemedia_1/" class="contact-value" data-hover
-                    target="_blank">@scalemedia_1</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-text">scalemedia &copy; 2026</div>
-        <div class="footer-text">mumbai, india</div>
-        <div class="footer-links">
-            <a href="https://www.instagram.com/scalemedia_1/" data-hover target="_blank">instagram</a>
-            <a href="mailto:scalemedia2214@gmail.com" data-hover>email</a>
-            <a href="https://wa.me/918591725750" data-hover target="_blank">whatsapp</a>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-    <script>
-        // Register ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const hoverElements = document.querySelectorAll('a, button, [data-hover]');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-        });
-
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
-
-        // Loader
-        const tlLoader = gsap.timeline();
-
-        tlLoader.to('#loader-text span', {
-            opacity: 1,
-            y: 0,
-            duration: 0.1,
-            stagger: 0.05,
-            ease: 'power2.out'
+    try {
+      const response = await fetch('https://formspree.io/f/mvzlwbgn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          ...formState,
+          _subject: `ScaleMedia Lead Submission - ${formState.name} (${formState.business})`
         })
-            .to('#loader-progress', {
-                width: '100%',
-                duration: 1,
-                ease: 'power2.inOut'
-            })
-            .to('#loader', {
-                opacity: 0,
-                duration: 0.5,
-                ease: 'power2.inOut',
-                onComplete: () => {
-                    document.getElementById('loader').style.display = 'none';
-                    initHeroAnimations();
-                }
-            });
+      });
 
-        function initHeroAnimations() {
-            const tlHero = gsap.timeline();
-            tlHero.to('.hl-line', {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: 'power3.out'
-            })
-                .to('#hero-subline', {
-                    opacity: 1,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                }, "-=0.4")
-                .to('.cta-link', {
-                    opacity: 1,
-                    duration: 0.5,
-                    ease: 'power2.out'
-                }, "-=0.2");
-        }
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormState({ name: '', email: '', phone: '', business: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (err) {
+      console.error('Contact Form transmission error:', err);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-        // Scroll Narrative
-        const narrativeBeats = gsap.utils.toArray('.n-beat');
+  // --- 7 marketing solutions from www.scalemedia.in ---
+  const solutionsList = [
+    {
+      title: "Strategy & Advisory",
+      desc: "Comprehensive business roadmap, market positioning research, and strategic consulting to ensure measurable growth and true value generation.",
+      icon: <CompassIcon className="w-6 h-6" />
+    },
+    {
+      title: "Digital Marketing & Advertising",
+      desc: "High-converting paid conversion pipelines (Meta & Google Ads) designed systematically to maximize acquisition and scale your audience.",
+      icon: <MegaphoneIcon className="w-6 h-6" />
+    },
+    {
+      title: "Design & Branding",
+      desc: "Premium visual systems, custom typography, cohesive color matrices, and professional packaging designs that establish brand authority.",
+      icon: <PaletteIcon className="w-6 h-6" />
+    },
+    {
+      title: "Product Launch Management",
+      desc: "Robust go-to-market pipelines specifically constructed to propel initial traction, trigger viral engagement, and secure market footprint.",
+      icon: <RocketIcon className="w-6 h-6" />
+    },
+    {
+      title: "Commercial Media Production",
+      desc: "Cinematic commercials, high-quality photography, product shoots, and viral Reel creation structured to tell engaging stories.",
+      icon: <VideoIcon className="w-6 h-6" />
+    },
+    {
+      title: "Media & PR",
+      desc: "Strategic public relations placements, press outreach, and industry features to position you as an undisputed sector leader.",
+      icon: <GlobeIcon className="w-6 h-6" />
+    },
+    {
+      title: "Website & UI/UX",
+      desc: "Fast, conversion-optimized, state-of-the-art landing pages and brand sites designed to seamlessly capture leads and scale returns.",
+      icon: <LaptopIcon className="w-6 h-6" />
+    }
+  ];
 
-        const tlNarrative = gsap.timeline({
-            scrollTrigger: {
-                trigger: '#narrative-section',
-                start: 'top top',
-                end: '+=300%',
-                pin: true,
-                scrub: 1
-            }
-        });
+  // --- Portfolio items incorporating both scalemedianew and scalemedia.in (Health in a Bucket Odisha flag) ---
+  const portfolioList = [
+    {
+      category: "Commercial Video & Branding",
+      title: "Health in a Bucket",
+      desc: "Crafted organic social media communication, paid ads, packaging design, and commercial video production during lockdowns in Odisha, generating massive public awareness and localized conversions.",
+      stats: "6.0x ROI | +45% Engagement | 10k+ Leads",
+      gradient: "from-emerald-600 to-teal-500"
+    },
+    {
+      category: "Instagram Growth",
+      title: "Lifestyle Brand Expansion",
+      desc: "Deployed short-form organic video hooks and viral Reels strategies, accelerating genuine follower count and scaling brand reach organically.",
+      stats: "2k to 50k Followers | 5M+ Views",
+      gradient: "from-blue-600 to-indigo-500"
+    },
+    {
+      category: "Paid Ads (Meta)",
+      title: "Luxury Properties Lead Gen",
+      desc: "Constructed premium real estate conversion funnels and highly targeted regional Meta Ads campaigns, capturing high-ticket prospects.",
+      stats: "150+ Qualified Leads | 3.8x ROAS",
+      gradient: "from-purple-600 to-pink-500"
+    },
+    {
+      category: "Personal Brand Growth",
+      title: "CEO Thought Leadership",
+      desc: "Structured content maps, captions, and thought pieces to position a tech founder as an expert, resulting in prestigious speaking engagements.",
+      stats: "3 National Gigs | +200% Reach",
+      gradient: "from-indigo-600 to-purple-500"
+    },
+    {
+      category: "Local Campaigns",
+      title: "Downtown Cafe Launch",
+      desc: "Leveraged highly localized demographic advertising and micro-influencer reviews, producing massive physical lines on the grand opening weekend.",
+      stats: "500+ Visitors | Fully Booked",
+      gradient: "from-amber-600 to-orange-500"
+    },
+    {
+      category: "E-Commerce paid Ads",
+      title: "Fashion Boutique Checkout",
+      desc: "Re-engineered checkout funnels, retargeting sequences, and discount campaigns, maximizing conversion rates and cart values.",
+      stats: "4.5x Return on Ad Spend",
+      gradient: "from-rose-600 to-pink-500"
+    }
+  ];
 
-        narrativeBeats.forEach((beat, i) => {
-            tlNarrative.fromTo(beat,
-                { opacity: 0, clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)' },
-                { opacity: 1, clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', duration: 1, ease: 'power2.inOut' }
-            );
-            if (i !== narrativeBeats.length - 1) {
-                tlNarrative.to(beat, { opacity: 0, duration: 0.5, ease: 'power2.inOut' });
-            }
-        });
+  // --- Testimonials from the reference website ---
+  const testimonialsList = [
+    {
+      stars: 5,
+      quote: "ScaleMedia completely transformed our local clinic's online presence. We are now booked out 3 weeks in advance thanks to their lead generation strategies.",
+      author: "Dr. Amit Sharma",
+      role: "Medical Partner",
+      avatarInitials: "AS"
+    },
+    {
+      stars: 5,
+      quote: "Working with an agency halfway across the world felt risky, but the communication and results have been flawless. Our ROAS has never been higher.",
+      author: "Sarah Jenkins",
+      role: "E-Commerce Founder",
+      avatarInitials: "SJ"
+    },
+    {
+      stars: 5,
+      quote: "As a tech startup, we needed fast growth. ScaleMedia delivered a solid content and ad strategy that helped us close our seed funding round with confidence.",
+      author: "Rahul Desai",
+      role: "Software CEO",
+      avatarInitials: "RD"
+    }
+  ];
 
-        // Services
-        gsap.utils.toArray('.service-item').forEach(item => {
-            gsap.to(item, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 85%'
-                },
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: 'power3.out'
-            });
-        });
+  // --- Pricing tiers with actual pricing info mapped from scalemedia.in's plans ---
+  const pricingList = [
+    {
+      name: "Starter Plan",
+      price: "₹5,000",
+      period: "/month",
+      desc: "Foundation organic footprint & advisory",
+      features: [
+        "Strategy & Advisory consult",
+        "Design & Branding assets",
+        "Social Media Management",
+        "12 High-Quality Posts",
+        "Basic Organic Growth Setup",
+        "1 Content Edit per Week",
+        "Basic Target Audience Setup",
+        "Monthly Check-In & Reporting"
+      ],
+      buttonText: "Get Started",
+      featured: false
+    },
+    {
+      name: "Growth Plan",
+      price: "₹11,999",
+      period: "/month",
+      desc: "Accelerated conversion & Reels funnel",
+      features: [
+        "Everything in Starter Plan",
+        "Comprehensive Ads Strategy",
+        "20 High-Quality Posts",
+        "4 Custom Video Reels / Month",
+        "Instagram & Facebook Management",
+        "Reel Editing (Hooks & Trends)",
+        "Niche & Competitor Analysis",
+        "Caption Copy & CTA Setup",
+        "Custom Hashtag Optimisation",
+        "Basic Comment Moderation",
+        "Priority Support & Strategy Check"
+      ],
+      buttonText: "Let's Scale",
+      featured: true
+    },
+    {
+      name: "Premium Plan",
+      price: "₹15,000+",
+      period: "/month",
+      desc: "Multi-channel market domination",
+      features: [
+        "Everything in Growth Plan",
+        "Full Account Management",
+        "Advanced Paid Ads (Meta & Google)",
+        "Custom Lead Generation Funnels",
+        "8 Custom Video Reels / Month",
+        "Premium Content Writing & Copy",
+        "Website & UI/UX Page (1 / Qtr)",
+        "Weekly Strategy Call & Reporting",
+        "24/7 Dedicated Account Strategist",
+        "Basics SEO & On-Page Config",
+        "Priority Response & Support"
+      ],
+      buttonText: "Apply Now",
+      featured: false
+    }
+  ];
 
-        // Results Counting
-        const resultsSection = document.getElementById('results-section');
-        ScrollTrigger.create({
-            trigger: resultsSection,
-            start: 'top 80%',
-            once: true,
-            onEnter: () => {
-                const targets = document.querySelectorAll('.stat-num');
-                targets.forEach(t => {
-                    const endValue = parseInt(t.getAttribute('data-target'));
-                    gsap.to(t, {
-                        innerHTML: endValue,
-                        duration: 2,
-                        snap: { innerHTML: 1 },
-                        ease: 'power2.out',
-                        onUpdate: function () {
-                            let val = Math.round(this.targets()[0].innerHTML);
-                            if (endValue === 10) t.innerHTML = val + 'x';
-                            else if (endValue === 3) t.innerHTML = val + 'x';
-                            else if (endValue === 47) t.innerHTML = val + '+';
-                            else t.innerHTML = val;
-                        }
-                    });
-                });
-            }
-        });
+  return (
+    <div className="min-h-screen bg-bg-light text-primary-navy selection:bg-bright-blue/20 selection:text-bright-blue font-sans relative antialiased overflow-x-hidden">
+      
+      {/* --- GLOWING BACKGROUND METADATA (Beautiful mesh grids and glowing purple/indigo radial blobs) --- */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f080_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f080_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] pointer-events-none z-0" />
+      
+      {/* Glowing purple blob */}
+      <div className="absolute top-[10vh] left-[5%] w-[45vw] h-[45vh] bg-purple-300/15 blur-[120px] rounded-full pointer-events-none z-0" />
+      {/* Glowing indigo blob */}
+      <div className="absolute top-[40vh] right-[10%] w-[40vw] h-[45vh] bg-indigo-300/20 blur-[130px] rounded-full pointer-events-none z-0" />
+      {/* Glowing teal blob further down */}
+      <div className="absolute top-[150vh] left-[15%] w-[35vw] h-[40vh] bg-teal-200/10 blur-[110px] rounded-full pointer-events-none z-0" />
 
-        // Process Horizontal Scroll
-        const processContainer = document.getElementById('process-container');
-        gsap.to(processContainer, {
-            x: () => -(processContainer.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#process-section",
-                pin: true,
-                scrub: 1,
-                end: () => "+=" + (processContainer.scrollWidth - window.innerWidth)
-            }
-        });
+      {/* --- NAVBAR --- */}
+      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-3.5 shadow-sm' : 'bg-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          {/* Logo */}
+          <a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="flex items-center gap-2.5 group">
+            <div className="w-10 h-10 rounded-full bg-primary-navy flex items-center justify-center text-white transition-transform duration-300 group-hover:scale-110 shadow-sm border border-white/10">
+              <ChartLineIcon className="w-5.5 h-5.5 text-accent-green" />
+            </div>
+            <span className="text-2xl font-black tracking-tighter text-primary-navy group-hover:text-bright-blue transition-colors duration-300">
+              ScaleMedia
+            </span>
+          </a>
 
-        // Pricing Stagger
-        gsap.to('.pricing-card', {
-            scrollTrigger: {
-                trigger: '.pricing-grid',
-                start: 'top 80%'
-            },
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
-        });
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="text-sm font-semibold text-primary-navy/85 hover:text-bright-blue transition-colors">Home</a>
+            <a href="#about" onClick={(e) => handleNavLinkClick(e, '#about')} className="text-sm font-semibold text-primary-navy/85 hover:text-bright-blue transition-colors">About</a>
+            <a href="#solutions" onClick={(e) => handleNavLinkClick(e, '#solutions')} className="text-sm font-semibold text-primary-navy/85 hover:text-bright-blue transition-colors">Solutions</a>
+            <a href="#portfolio" onClick={(e) => handleNavLinkClick(e, '#portfolio')} className="text-sm font-semibold text-primary-navy/85 hover:text-bright-blue transition-colors">Work</a>
+            <a href="#pricing" onClick={(e) => handleNavLinkClick(e, '#pricing')} className="text-sm font-semibold text-primary-navy/85 hover:text-bright-blue transition-colors">Pricing</a>
+            <a href="#contact" onClick={(e) => handleNavLinkClick(e, '#contact')} className="text-sm font-semibold text-primary-navy/85 hover:text-bright-blue transition-colors">Contact</a>
+          </nav>
 
-        // Contact Split Animation
-        const contactSplitTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.contact-split',
-                start: 'top 80%'
-            }
-        });
+          {/* CTA Desktop */}
+          <div className="hidden md:block">
+            <a 
+              href="#contact" 
+              onClick={(e) => handleNavLinkClick(e, '#contact')}
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs font-bold bg-bright-blue text-white shadow-md hover:bg-primary-navy hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+              style={{ borderRadius: '50px' }}
+            >
+              Get Free Consultation
+            </a>
+          </div>
 
-        contactSplitTl.fromTo('#split-title',
-            { opacity: 0, x: -50 },
-            { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }
-        ).fromTo('.contact-form',
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-            "-=0.4"
-        ).fromTo('.contact-item',
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
-            "-=0.4"
-        );
+          {/* Mobile Hamburg Trigger */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg text-primary-navy hover:bg-slate-100 transition-colors"
+            aria-label="Toggle Navigation Menu"
+          >
+            {mobileMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
+          </button>
+        </div>
 
-    </script>
-</body>
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-lg border-b border-slate-200 py-6 px-6 shadow-xl animate-fade-in">
+            <nav className="flex flex-col gap-4">
+              <a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="text-base font-bold text-primary-navy py-1.5 border-b border-slate-100/60">Home</a>
+              <a href="#about" onClick={(e) => handleNavLinkClick(e, '#about')} className="text-base font-bold text-primary-navy py-1.5 border-b border-slate-100/60">About</a>
+              <a href="#solutions" onClick={(e) => handleNavLinkClick(e, '#solutions')} className="text-base font-bold text-primary-navy py-1.5 border-b border-slate-100/60">Solutions</a>
+              <a href="#portfolio" onClick={(e) => handleNavLinkClick(e, '#portfolio')} className="text-base font-bold text-primary-navy py-1.5 border-b border-slate-100/60">Work</a>
+              <a href="#pricing" onClick={(e) => handleNavLinkClick(e, '#pricing')} className="text-base font-bold text-primary-navy py-1.5 border-b border-slate-100/60">Pricing</a>
+              <a href="#contact" onClick={(e) => handleNavLinkClick(e, '#contact')} className="text-base font-bold text-primary-navy py-1.5 border-b border-slate-100/60">Contact</a>
+              
+              <a 
+                href="#contact" 
+                onClick={(e) => handleNavLinkClick(e, '#contact')}
+                className="mt-2 block w-full text-center py-3 rounded-full text-sm font-bold bg-bright-blue text-white shadow-md hover:bg-primary-navy transition-colors"
+                style={{ borderRadius: '50px' }}
+              >
+                Get Free Consultation
+              </a>
+            </nav>
+          </div>
+        )}
+      </header>
 
-</html>
+      {/* --- HERO SECTION --- */}
+      <section id="home" className="min-h-screen flex items-center justify-center pt-28 pb-16 relative overflow-hidden z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f8fafc]/40 to-[#e2e8f0]/40 pointer-events-none z-0" />
+        
+        <div className="max-w-5xl mx-auto px-6 text-center z-10 animate-fade-in space-y-6">
+          {/* Badge */}
+          <div className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-bright-blue/10 border border-bright-blue/20 text-bright-blue text-xs font-black uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-accent-green animate-ping" />
+            Crafting Stories of Growth
+          </div>
+
+          {/* Headline */}
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-primary-navy leading-[1.1] tracking-tight">
+            measurable growth. <br />
+            <span className="text-bright-blue bg-gradient-to-r from-bright-blue to-accent-green bg-clip-text text-transparent">generating true value.</span>
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-lg md:text-2xl text-text-gray font-medium max-w-3xl mx-auto leading-relaxed">
+            We believe in working towards measurable growth and generating true value for our partners. Let us turn your digital presence into tangible business returns.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-4">
+            <a 
+              href="#contact" 
+              onClick={(e) => handleNavLinkClick(e, '#contact')}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-bold bg-bright-blue text-white shadow-lg hover:bg-primary-navy hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
+              style={{ borderRadius: '50px' }}
+            >
+              Let's Scale
+              <ArrowRightIcon className="w-4 h-4" />
+            </a>
+            <a 
+              href="#solutions" 
+              onClick={(e) => handleNavLinkClick(e, '#solutions')}
+              className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold bg-white text-primary-navy border border-slate-200 hover:border-bright-blue hover:text-bright-blue hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+              style={{ borderRadius: '50px' }}
+            >
+              Our Solutions
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* --- CLIENT LOGO TRUST BAR --- */}
+      <section className="py-8 bg-white/40 border-y border-slate-200/50 backdrop-blur-sm relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-xs font-black uppercase tracking-wider text-slate-400 mb-4">ENGINEERING SCALE ACROSS AMBITIOUS SECTORS</p>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-65 text-slate-700 font-extrabold text-sm md:text-base">
+            <span className="hover:text-bright-blue transition-colors">E-Commerce & DTC</span>
+            <span className="hover:text-bright-blue transition-colors">Health & Wellness</span>
+            <span className="hover:text-bright-blue transition-colors">B2B Software</span>
+            <span className="hover:text-bright-blue transition-colors">Real Estate & Retail</span>
+            <span className="hover:text-bright-blue transition-colors">CEO Personal Brands</span>
+          </div>
+        </div>
+      </section>
+
+      {/* --- CORE AUDIT VALUE SECTION --- */}
+      <section className="py-20 relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="reveal p-8 md:p-16 rounded-[40px] bg-primary-navy text-white text-center relative overflow-hidden shadow-2xl">
+            {/* Grid overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] pointer-events-none" />
+            <div className="absolute -top-32 -left-32 w-72 h-72 bg-bright-blue/20 blur-[90px] rounded-full pointer-events-none" />
+            <div className="absolute -bottom-32 -right-32 w-72 h-72 bg-accent-green/20 blur-[90px] rounded-full pointer-events-none" />
+
+            <div className="relative z-10 max-w-4xl mx-auto space-y-6">
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-black leading-tight tracking-tight uppercase">
+                "We work towards measurable growth and generating true value for our partners."
+              </h2>
+              <div className="w-20 h-1 bg-accent-green mx-auto my-5 rounded-full" />
+              <p className="text-lg md:text-xl font-bold text-slate-300 italic tracking-wide">
+                Crafting Growth Stories with Commercial Video, Packaging, and Social Systems
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- ABOUT SECTION --- */}
+      <section id="about" className="py-24 relative overflow-hidden bg-bg-light z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Left: About Visual Mockup */}
+            <div className="reveal lg:col-span-6 relative">
+              <div className="absolute -inset-4 bg-gradient-to-tr from-bright-blue to-accent-green rounded-[40px] blur-xl opacity-20 pointer-events-none" />
+              <div className="relative rounded-[32px] overflow-hidden border border-slate-200/80 shadow-2xl bg-white p-4">
+                <img 
+                  src="/agency_about_visual.png" 
+                  alt="ScaleMedia Agency workspace representation" 
+                  className="w-full h-auto object-cover rounded-2xl"
+                />
+              </div>
+            </div>
+
+            {/* Right: Text and Key Bullet Points */}
+            <div className="reveal lg:col-span-6 space-y-8">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-bright-blue/15 text-bright-blue text-xs font-black uppercase tracking-widest">
+                Who We Are
+              </div>
+              
+              <h3 className="text-3xl md:text-5xl font-extrabold text-primary-navy tracking-tight leading-tight">
+                Who is ScaleMedia?
+              </h3>
+              
+              <p className="text-lg text-text-gray font-medium leading-relaxed">
+                ScaleMedia is a premier Social Media & Marketing Agency based in India, serving clients worldwide. We specialize in transforming digital presence into tangible, measurable business growth. We don't just post content; we build conversion funnels, communities, and campaigns that compound in value.
+              </p>
+
+              {/* 3 highlight list with icons */}
+              <div className="space-y-4 pt-2">
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-blue-100 text-bright-blue flex items-center justify-center shrink-0">
+                    <CompassIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-extrabold text-primary-navy">Data Driven Strategy</h4>
+                    <p className="text-sm text-text-gray font-medium mt-0.5">Every decision we make is backed by analytics and market research to ensure maximum ROI.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-green-100 text-accent-green flex items-center justify-center shrink-0">
+                    <RocketIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-extrabold text-primary-navy">Fast Growth Frameworks</h4>
+                    <p className="text-sm text-text-gray font-medium mt-0.5">Accelerate your brand's reach with our proven organic distribution and high-ROI paid media setups.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                    <CheckIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-extrabold text-primary-navy">Affordable Premium Scaling</h4>
+                    <p className="text-sm text-text-gray font-medium mt-0.5">Premium agency services scaled and custom-structured to fit local businesses and global startups alike.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* --- SOLUTIONS SECTION --- */}
+      <section id="solutions" className="py-24 bg-white relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-bright-blue">Redesigning Reach</h2>
+            <h3 className="text-3xl md:text-5xl font-extrabold text-primary-navy tracking-tight">Our Solutions</h3>
+            <p className="text-text-gray font-medium text-base">
+              A comprehensive stack of conversion-focused services constructed systematically to build true value and scale your brand.
+            </p>
+          </div>
+
+          {/* 7 Solutions Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {solutionsList.map((svc, idx) => (
+              <div 
+                key={idx} 
+                className="reveal hover-card-blue p-8 rounded-3xl bg-bg-light border border-slate-200/60 shadow-sm flex flex-col items-start gap-5 cursor-pointer relative overflow-hidden group"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-bright-blue/10 flex items-center justify-center text-bright-blue group-hover:bg-white/20 group-hover:text-white transition-all duration-300">
+                  {svc.icon}
+                </div>
+                <div className="space-y-2">
+                  <h4 className="text-xl font-extrabold text-primary-navy transition-colors duration-300">{svc.title}</h4>
+                  <p className="text-text-gray font-medium text-sm leading-relaxed transition-colors duration-300">{svc.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- STATS SECTION --- */}
+      <section className="py-20 bg-primary-navy text-white relative overflow-hidden z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+        
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            
+            {/* Stat 1 */}
+            <div className="space-y-2">
+              <div className="text-5xl md:text-6xl text-bright-blue">
+                <AnimatedCounter end={6} suffix="x" prefix="" />
+              </div>
+              <p className="text-xs font-black tracking-widest uppercase text-slate-400">ROI Generated (Flagship Launch)</p>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="space-y-2">
+              <div className="text-5xl md:text-6xl text-accent-green">
+                <AnimatedCounter end={45} suffix="%" prefix="+" />
+              </div>
+              <p className="text-xs font-black tracking-widest uppercase text-slate-400">Increased Engagement Rate</p>
+            </div>
+
+            {/* Stat 3 */}
+            <div className="space-y-2">
+              <div className="text-5xl md:text-6xl text-bright-blue">
+                <AnimatedCounter end={10} suffix="k+" />
+              </div>
+              <p className="text-xs font-black tracking-widest uppercase text-slate-400">Conversations & Leads Initiated</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* --- PORTFOLIO SECTION --- */}
+      <section id="portfolio" className="py-24 bg-bg-light relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-bright-blue">Our Portfolio</h2>
+            <h3 className="text-3xl md:text-5xl font-extrabold text-primary-navy tracking-tight">Featured Work</h3>
+            <p className="text-text-gray font-medium text-base">
+              Take a look at how we've helped partners build true value, deploy creative communication, and systematically scale results.
+            </p>
+          </div>
+
+          {/* 3x2 Grid of Case Studies */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {portfolioList.map((proj, idx) => (
+              <div 
+                key={idx}
+                className="reveal bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* Visual Thumbnail Gradient Block (Eliminates broken images while staying highly aesthetic) */}
+                <div className={`h-48 w-full bg-gradient-to-tr ${proj.gradient} relative p-6 flex flex-col justify-between text-white`}>
+                  <div className="absolute inset-0 bg-black/10 mix-blend-overlay" />
+                  <span className="text-[10px] font-black uppercase tracking-widest bg-white/20 backdrop-blur-md px-3 py-1 rounded-full self-start">
+                    {proj.category}
+                  </span>
+                  
+                  {proj.title === "Health in a Bucket" && (
+                    <div className="absolute right-4 top-4 bg-yellow-400 text-slate-900 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow">
+                      Flagship
+                    </div>
+                  )}
+
+                  <div className="relative z-10">
+                    <span className="block text-2xl font-black tracking-tight">{proj.stats}</span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-3 flex-grow flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-extrabold text-primary-navy">{proj.title}</h4>
+                    <p className="text-sm text-text-gray font-medium leading-relaxed">{proj.desc}</p>
+                  </div>
+
+                  {proj.title === "Health in a Bucket" && (
+                    <div className="pt-2 border-t border-slate-100">
+                      <span className="block text-[10px] font-black uppercase tracking-wider text-slate-400">Solutions Used:</span>
+                      <p className="text-[11px] font-bold text-bright-blue mt-0.5">Commercial Video, Packaging, Media strategy, Ads</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- TESTIMONIALS SECTION --- */}
+      <section className="py-24 bg-primary-navy text-white relative overflow-hidden z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-bright-blue">Client Success Stories</h2>
+            <h3 className="text-3xl md:text-5xl font-extrabold tracking-tight">What Our Partners Say</h3>
+            <p className="text-slate-400 font-medium text-base">Don't just take our word for it. Here is the feedback from our valued business partners.</p>
+          </div>
+
+          {/* Testimonials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonialsList.map((test, idx) => (
+              <div 
+                key={idx}
+                className="reveal p-8 rounded-3xl bg-[#0b1526] border border-slate-800 shadow-xl flex flex-col justify-between gap-6 hover:border-slate-700 transition-colors duration-300"
+              >
+                <div className="space-y-4">
+                  {/* Rating Stars */}
+                  <div className="flex gap-1 text-yellow-400">
+                    {[...Array(test.stars)].map((_, sidx) => (
+                      <StarIcon key={sidx} className="w-4 h-4" />
+                    ))}
+                  </div>
+                  {/* Quote */}
+                  <p className="text-sm font-medium text-slate-300 leading-relaxed italic">
+                    "{test.quote}"
+                  </p>
+                </div>
+
+                {/* Author Info */}
+                <div className="flex items-center gap-3.5 pt-4 border-t border-slate-800/80">
+                  <div className="w-10 h-10 rounded-full bg-bright-blue/20 text-bright-blue flex items-center justify-center font-bold text-sm">
+                    {test.avatarInitials}
+                  </div>
+                  <div>
+                    <span className="block text-sm font-extrabold text-white">{test.author}</span>
+                    <span className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">{test.role}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- PRICING SECTION --- */}
+      <section id="pricing" className="py-24 bg-white relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto mb-20 space-y-3">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-bright-blue">Pricing Matrix</h2>
+            <h3 className="text-3xl md:text-5xl font-extrabold text-primary-navy tracking-tight uppercase">Simple Pricing. Serious Results.</h3>
+            <p className="text-text-gray font-medium text-base">No retainers that do nothing. Pick the customized program that fits where you are.</p>
+          </div>
+
+          {/* Pricing Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-12">
+            {pricingList.map((plan, idx) => (
+              <div 
+                key={idx}
+                className={`reveal p-8 rounded-[32px] flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer ${
+                  plan.featured 
+                    ? 'bg-primary-navy text-white border-2 border-bright-blue shadow-2xl scale-100 lg:scale-[1.03] relative z-10' 
+                    : 'bg-bg-light border border-slate-200/80 shadow-sm'
+                }`}
+              >
+                {plan.featured && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-bright-blue text-white text-[10px] font-black tracking-widest uppercase py-1.5 px-4.5 rounded-full shadow">
+                    Most Popular
+                  </div>
+                )}
+
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-2xl font-extrabold">{plan.name}</h4>
+                    <p className={`text-xs font-medium mt-1 ${plan.featured ? 'text-slate-400' : 'text-text-gray'}`}>{plan.desc}</p>
+                  </div>
+
+                  <div className="flex items-baseline">
+                    <span className="text-4.5xl font-black">{plan.price}</span>
+                    <span className={`text-sm font-bold ml-1 ${plan.featured ? 'text-slate-400' : 'text-text-gray'}`}>{plan.period}</span>
+                  </div>
+
+                  <div className={`w-full h-[1px] ${plan.featured ? 'bg-slate-800' : 'bg-slate-200'}`} />
+
+                  <ul className="space-y-3.5">
+                    {plan.features.map((feat, fidx) => (
+                      <li key={fidx} className="flex items-start gap-2.5 text-sm font-semibold">
+                        <CheckIcon className={`w-4 h-4 shrink-0 mt-0.5 ${plan.featured ? 'text-accent-green' : 'text-bright-blue'}`} />
+                        <span className={plan.featured ? 'text-slate-200' : 'text-primary-navy'}>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-8">
+                  <a 
+                    href="#contact" 
+                    onClick={(e) => handleNavLinkClick(e, '#contact')}
+                    className={`block w-full text-center py-3.5 px-4 rounded-full text-sm font-bold transition-all duration-300 ${
+                      plan.featured 
+                        ? 'bg-white text-primary-navy hover:bg-bright-blue hover:text-white' 
+                        : 'text-primary-navy border border-primary-navy hover:bg-primary-navy hover:text-white'
+                    }`}
+                    style={{ borderRadius: '50px' }}
+                  >
+                    {plan.buttonText}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center space-y-2.5">
+            <p className="text-sm font-bold text-text-gray">All programs are month-to-month. No long-term lock-in contracts.</p>
+            <a 
+              href="#contact" 
+              onClick={(e) => handleNavLinkClick(e, '#contact')}
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-bright-blue hover:text-primary-navy transition-colors group"
+            >
+              Need a bespoke marketing strategy?
+              <span className="group-hover:translate-x-1 transition-transform">→ Book a free call</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- CONTACT SECTION --- */}
+      <section id="contact" className="py-24 bg-bg-light relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            
+            {/* Left Column: Direct Agency Details */}
+            <div className="reveal lg:col-span-5 space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-bright-blue/15 text-bright-blue text-xs font-black uppercase tracking-widest">
+                  Let's Connect
+                </div>
+                <h3 className="text-4xl md:text-5xl font-black text-primary-navy tracking-tight uppercase">Let's talk.</h3>
+                <p className="text-text-gray font-medium leading-relaxed">
+                  We're always open to a cup of coffee! Drop your details here and our strategist will reach out in under 12 hours with a comprehensive audit layout.
+                </p>
+              </div>
+
+              {/* Direct Info Blocks */}
+              <div className="space-y-6">
+                {/* Email */}
+                <div className="flex items-center gap-4.5">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-bright-blue shadow-sm">
+                    <MailIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-black text-text-gray uppercase tracking-wider">Email Us</span>
+                    <a href="mailto:hello@scalemedia.in" className="text-base font-extrabold text-primary-navy hover:text-bright-blue transition-colors">
+                      hello@scalemedia.in
+                    </a>
+                  </div>
+                </div>
+
+                {/* Call */}
+                <div className="flex items-center gap-4.5">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-bright-blue shadow-sm">
+                    <PhoneIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-black text-text-gray uppercase tracking-wider">Call Hotline</span>
+                    <div className="flex flex-col">
+                      <a href="tel:+919438560160" className="text-base font-extrabold text-primary-navy hover:text-bright-blue transition-colors">
+                        +91 94385 60160
+                      </a>
+                      <a href="tel:+917978363035" className="text-sm font-bold text-primary-navy/80 hover:text-bright-blue transition-colors">
+                        +91 79783 63035
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location */}
+                <div className="flex items-center gap-4.5">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-bright-blue shadow-sm">
+                    <CompassIcon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-black text-text-gray uppercase tracking-wider">Headquarters</span>
+                    <span className="text-base font-extrabold text-primary-navy">
+                      Odisha, India <span className="text-xs text-text-gray font-semibold">(Serving Worldwide)</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Social Channels */}
+              <div className="space-y-3">
+                <span className="block text-[10px] font-black text-text-gray uppercase tracking-wider">Follow Our Journey</span>
+                <div className="flex gap-3">
+                  <a 
+                    href="https://www.facebook.com/Scale-Media-108648390662822" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-bright-blue hover:text-white hover:border-bright-blue flex items-center justify-center transition-all"
+                    aria-label="Facebook"
+                  >
+                    <FacebookIcon className="w-5 h-5" />
+                  </a>
+                  <a 
+                    href="https://www.linkedin.com/company/scale-mediaindia" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-bright-blue hover:text-white hover:border-bright-blue flex items-center justify-center transition-all"
+                    aria-label="LinkedIn"
+                  >
+                    <LinkedinIcon className="w-5 h-5" />
+                  </a>
+                  <a 
+                    href="https://www.instagram.com/scalemedia_in/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-bright-blue hover:text-white hover:border-bright-blue flex items-center justify-center transition-all"
+                    aria-label="Instagram"
+                  >
+                    <InstagramIcon className="w-5 h-5" />
+                  </a>
+                  <a 
+                    href="https://www.youtube.com/channel/UC3QrbiloCBn9OCilvb-hewg/featured" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-10 h-10 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-bright-blue hover:text-white hover:border-bright-blue flex items-center justify-center transition-all"
+                    aria-label="YouTube"
+                  >
+                    <YoutubeIcon className="w-5 h-5" />
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Column: Contact Inquiry Form Card */}
+            <div className="reveal lg:col-span-7 bg-white p-8 md:p-12 rounded-[36px] border border-slate-200/80 shadow-xl relative">
+              {submitStatus === 'success' && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-white rounded-[36px] animate-fade-in z-20">
+                  <div className="w-16 h-16 rounded-full bg-green-100 text-[#16a34a] flex items-center justify-center mb-6">
+                    <CheckIcon className="w-8 h-8" />
+                  </div>
+                  <h4 className="text-2xl font-black text-primary-navy mb-2">Message Transmitted!</h4>
+                  <p className="text-text-gray font-medium max-w-sm">
+                    Thank you! ScaleMedia will contact you soon.
+                  </p>
+                </div>
+              )}
+
+              <form onSubmit={handleFormSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Name */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="name" className="text-xs font-black text-primary-navy uppercase tracking-wider block">Full Name *</label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      name="name" 
+                      value={formState.name} 
+                      onChange={handleInputChange} 
+                      required
+                      placeholder="e.g. John Doe"
+                      className="w-full px-5 py-3.5 bg-bg-light border border-slate-200 rounded-xl focus:border-bright-blue focus:ring-1 focus:ring-bright-blue outline-none text-sm font-bold text-primary-navy transition-all"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="email" className="text-xs font-black text-primary-navy uppercase tracking-wider block">Email Address *</label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email" 
+                      value={formState.email} 
+                      onChange={handleInputChange} 
+                      required
+                      placeholder="e.g. john@business.com"
+                      className="w-full px-5 py-3.5 bg-bg-light border border-slate-200 rounded-xl focus:border-bright-blue focus:ring-1 focus:ring-bright-blue outline-none text-sm font-bold text-primary-navy transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Phone */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="phone" className="text-xs font-black text-primary-navy uppercase tracking-wider block">Phone Number *</label>
+                    <input 
+                      type="tel" 
+                      id="phone" 
+                      name="phone" 
+                      value={formState.phone} 
+                      onChange={handleInputChange} 
+                      required
+                      placeholder="e.g. +91 99999 88888"
+                      className="w-full px-5 py-3.5 bg-bg-light border border-slate-200 rounded-xl focus:border-bright-blue focus:ring-1 focus:ring-bright-blue outline-none text-sm font-bold text-primary-navy transition-all"
+                    />
+                  </div>
+
+                  {/* Business Name */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="business" className="text-xs font-black text-primary-navy uppercase tracking-wider block">Business Name</label>
+                    <input 
+                      type="text" 
+                      id="business" 
+                      name="business" 
+                      value={formState.business} 
+                      onChange={handleInputChange} 
+                      placeholder="e.g. Acme Health Products"
+                      className="w-full px-5 py-3.5 bg-bg-light border border-slate-200 rounded-xl focus:border-bright-blue focus:ring-1 focus:ring-bright-blue outline-none text-sm font-bold text-primary-navy transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="space-y-1.5">
+                  <label htmlFor="message" className="text-xs font-black text-primary-navy uppercase tracking-wider block">How can we help you? *</label>
+                  <textarea 
+                    id="message" 
+                    name="message" 
+                    rows={4}
+                    value={formState.message} 
+                    onChange={handleInputChange} 
+                    required
+                    placeholder="Tell us about your brand goals, digital platforms, or what solution program you are interested in..."
+                    className="w-full px-5 py-3.5 bg-bg-light border border-slate-200 rounded-xl focus:border-bright-blue focus:ring-1 focus:ring-bright-blue outline-none text-sm font-bold text-primary-navy transition-all resize-none"
+                  />
+                </div>
+
+                {/* Submit button */}
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full text-center py-4 rounded-full text-base font-bold bg-bright-blue text-white shadow hover:bg-primary-navy hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50"
+                  style={{ borderRadius: '50px' }}
+                >
+                  {isSubmitting ? 'Transmitting inquiry...' : 'Submit Inquiry'}
+                </button>
+
+                {submitStatus === 'error' && (
+                  <p className="text-xs font-bold text-red-500 text-center animate-fade-in">
+                    Something went wrong. Please check your network or reach out directly via Call / WhatsApp.
+                  </p>
+                )}
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* --- CTA BANNER --- */}
+      <section className="py-20 relative overflow-hidden z-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="reveal p-8 md:p-16 rounded-[40px] bg-gradient-to-r from-primary-navy to-bright-blue text-white relative overflow-hidden shadow-2xl">
+            {/* Grid overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
+            <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-green/20 blur-[100px] rounded-full pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="space-y-3 text-center lg:text-left">
+                <h3 className="text-3xl md:text-5xl font-black tracking-tight leading-tight uppercase">Ready to Scale Your Business?</h3>
+                <p className="text-slate-200 font-semibold max-w-2xl text-base md:text-lg">
+                  Stop leaving money on the table. Let's build a digital presence that converts.
+                </p>
+              </div>
+
+              <div className="shrink-0">
+                <a 
+                  href="#contact" 
+                  onClick={(e) => handleNavLinkClick(e, '#contact')}
+                  className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold bg-white text-primary-navy hover:bg-accent-green hover:text-white hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 shadow"
+                  style={{ borderRadius: '50px' }}
+                >
+                  Book Free Call
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FOOTER --- */}
+      <footer className="bg-primary-navy text-white pt-20 pb-10 relative overflow-hidden z-10">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-slate-800">
+            
+            {/* Col 1: Brand Info */}
+            <div className="lg:col-span-4 space-y-6">
+              <a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="flex items-center gap-2.5">
+                <div className="w-8.5 h-8.5 rounded-full bg-white flex items-center justify-center">
+                  <ChartLineIcon className="w-4.5 h-4.5 text-primary-navy" />
+                </div>
+                <span className="text-lg font-black tracking-tighter text-white">ScaleMedia</span>
+              </a>
+              
+              <p className="text-slate-400 text-sm font-medium leading-relaxed max-w-sm">
+                ScaleMedia is a premier Social Media & Marketing Agency in India, serving clients worldwide. We work towards measurable growth & generating true value for our partners.
+              </p>
+
+              {/* Social links */}
+              <div className="flex items-center gap-3">
+                <a 
+                  href="https://www.facebook.com/Scale-Media-108648390662822" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-9 h-9 rounded-full bg-slate-800 hover:bg-bright-blue hover:text-white flex items-center justify-center text-slate-400 transition-colors"
+                  aria-label="Facebook"
+                >
+                  <FacebookIcon className="w-4.5 h-4.5" />
+                </a>
+                <a 
+                  href="https://www.linkedin.com/company/scale-mediaindia" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-9 h-9 rounded-full bg-slate-800 hover:bg-bright-blue hover:text-white flex items-center justify-center text-slate-400 transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedinIcon className="w-4.5 h-4.5" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/scalemedia_in/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-9 h-9 rounded-full bg-slate-800 hover:bg-bright-blue hover:text-white flex items-center justify-center text-slate-400 transition-colors"
+                  aria-label="Instagram"
+                >
+                  <InstagramIcon className="w-4.5 h-4.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Col 2: Quick Links */}
+            <div className="lg:col-span-2 lg:col-start-6 space-y-4">
+              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Quick Links</h4>
+              <ul className="space-y-2 text-sm font-bold text-slate-300">
+                <li><a href="#home" onClick={(e) => handleNavLinkClick(e, '#home')} className="hover:text-bright-blue transition-colors">Home</a></li>
+                <li><a href="#about" onClick={(e) => handleNavLinkClick(e, '#about')} className="hover:text-bright-blue transition-colors">About Us</a></li>
+                <li><a href="#solutions" onClick={(e) => handleNavLinkClick(e, '#solutions')} className="hover:text-bright-blue transition-colors">Solutions</a></li>
+                <li><a href="#portfolio" onClick={(e) => handleNavLinkClick(e, '#portfolio')} className="hover:text-bright-blue transition-colors">Work</a></li>
+                <li><a href="#pricing" onClick={(e) => handleNavLinkClick(e, '#pricing')} className="hover:text-bright-blue transition-colors">Pricing</a></li>
+              </ul>
+            </div>
+
+            {/* Col 3: Services */}
+            <div className="lg:col-span-3 space-y-4">
+              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Our Solutions</h4>
+              <ul className="space-y-2 text-sm font-bold text-slate-300">
+                <li>Strategy & Advisory</li>
+                <li>Digital Marketing & Ads</li>
+                <li>Design & Branding</li>
+                <li>Product Launch Management</li>
+                <li>Commercial Video Production</li>
+                <li>Website & UI/UX Development</li>
+              </ul>
+            </div>
+
+            {/* Col 4: Contact info */}
+            <div className="lg:col-span-3 space-y-4">
+              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">Contact</h4>
+              <ul className="space-y-2.5 text-sm font-bold text-slate-300">
+                <li>Odisha, India (Serving Worldwide)</li>
+                <li>
+                  <a href="mailto:hello@scalemedia.in" className="hover:text-bright-blue transition-colors block">
+                    hello@scalemedia.in
+                  </a>
+                </li>
+                <li>
+                  <a href="tel:+919438560160" className="hover:text-bright-blue transition-colors block">
+                    +91 94385 60160
+                  </a>
+                  <a href="tel:+917978363035" className="hover:text-bright-blue transition-colors block">
+                    +91 79783 63035
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs font-bold text-slate-500 gap-4">
+            <p>© 2026 ScaleMedia. All rights reserved.</p>
+            <div className="flex gap-6">
+              <a href="#about" onClick={(e) => handleNavLinkClick(e, '#about')} className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#about" onClick={(e) => handleNavLinkClick(e, '#about')} className="hover:text-white transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* --- FLOATING WHATSAPP BUTTON --- */}
+      <a 
+        href="https://wa.me/919438560160" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        aria-label="Contact ScaleMedia on WhatsApp"
+        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#25d366] text-white flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 z-50 animate-pulse-glow group"
+      >
+        <WhatsAppIcon className="w-7 h-7" />
+        <span className="absolute right-full mr-3 py-1.5 px-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs font-extrabold shadow-md opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap pointer-events-none">
+          Chat With Us
+        </span>
+      </a>
+
+    </div>
+  );
+}
+
