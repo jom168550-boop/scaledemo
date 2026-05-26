@@ -1,1171 +1,1469 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCALEMEDIA | Growth that compounds</title>
-    <!-- Fonts -->
+    <title>ScaleMedia | We Scale Brands with Social Media</title>
+    <meta name="description"
+        content="ScaleMedia is a leading Social Media Marketing Agency helping businesses grow through content, ads and strategy.">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* CSS resets and variables */
         :root {
-            --bg: #080808;
-            --text-main: #f2ede6;
-            --text-muted: #444444;
-            --text-muted-light: #888888;
-            --accent: #c8ff00;
+            --primary: #0f172a;
+            /* Dark blue/slate - trustworthy */
+            --secondary: #3b82f6;
+            /* Bright blue */
+            --secondary-hover: #2563eb;
+            --accent: #10b981;
+            /* Green for growth/success */
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none;
-            /* Custom cursor */
-        }
-
-        html {
-            scroll-behavior: auto;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Ubuntu', sans-serif;
-            overflow-x: hidden;
-            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
             line-height: 1.6;
+            background-color: var(--bg-light);
+            overflow-x: hidden;
         }
 
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Typography */
         h1,
         h2,
         h3,
         h4,
         h5,
-        h6,
-        .syne {
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+        h6 {
+            color: var(--primary);
             line-height: 1.2;
+            font-weight: 700;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
         }
 
-        /* Video Background */
-        #bg-video {
+        h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.125rem;
+        }
+
+        section {
+            padding: 6rem 0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Navbar */
+        header {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -2;
-            pointer-events: none;
+            width: 100%;
+            z-index: 1000;
+            background-color: transparent;
+            transition: var(--transition);
+            padding: 1.5rem 0;
         }
 
-        #bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(8, 8, 8, 0.75);
-            /* Dark overlay for typography contrast */
-            z-index: -1;
-            pointer-events: none;
+        header.sticky {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Custom Cursor */
-        .cursor {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 8px;
-            height: 8px;
-            background-color: var(--text-main);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
-            mix-blend-mode: difference;
-        }
-
-        .cursor.hovered {
-            width: 32px;
-            height: 32px;
-            background-color: var(--text-main);
-        }
-
-        /* Loader */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background-color: var(--bg);
-            z-index: 9998;
+        .nav-container {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
         }
 
-        #loader .brand-text {
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 0.2em;
-            text-transform: capitalize;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
             display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        #loader .brand-text span {
-            opacity: 0;
-            transform: translateY(10px);
+        .logo i {
+            color: var(--secondary);
         }
 
-        #loader .progress {
-            width: 0%;
-            height: 1px;
-            background-color: var(--text-main);
-            margin-top: 1rem;
-            max-width: 200px;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            border: none;
+            background: none;
         }
 
         /* Hero Section */
         .hero {
-            position: relative;
-            height: 100vh;
-            width: 100vw;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 5vw;
-            z-index: 10;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            margin-bottom: 2rem;
-            text-transform: capitalize;
-        }
-
-        .hero h1 span {
-            display: block;
-            opacity: 0;
-            transform: translateY(30px);
+            margin-bottom: 1.5rem;
         }
 
         .hero p {
             font-size: 1.25rem;
-            font-weight: 300;
-            margin-bottom: 3rem;
-            opacity: 0;
+            margin-bottom: 2.5rem;
             max-width: 600px;
-            text-transform: capitalize;
         }
 
-        .cta-link {
-            text-transform: capitalize;
-            display: inline-block;
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
             position: relative;
-            padding-bottom: 4px;
-            font-size: 1.1rem;
-            opacity: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
         }
 
-        .cta-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 1px;
-            background-color: var(--accent);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .cta-link:hover::after {
+        .about-image img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .cta-link:hover {
-            color: var(--accent);
+        .about-content h2 {
+            margin-bottom: 1.5rem;
         }
 
-        /* Scroll Narrative */
-        .narrative {
-            height: 100vh;
+        .highlights {
+            margin-top: 2rem;
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .highlight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            padding: 0 5vw;
-            background-color: transparent;
-        }
-
-        .narrative-text {
-            font-size: clamp(2rem, 5vw, 4rem);
-            text-align: center;
-            font-family: 'Ubuntu', sans-serif;
-            text-transform: capitalize;
-            position: absolute;
-            opacity: 0;
-            clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
-            max-width: 900px;
+            font-size: 1.25rem;
+            flex-shrink: 0;
         }
 
         /* Services Section */
         .services {
-            padding: 10vw 5vw;
-            background: transparent;
+            background-color: var(--bg-white);
         }
 
         .services-grid {
-            display: flex;
-            flex-direction: column;
-            max-width: 1000px;
-            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
-        .service-item {
-            padding: 2.5rem 0;
-            border-bottom: 1px solid rgba(242, 237, 230, 0.1);
-            opacity: 0;
-            transform: translateY(30px);
+        .service-card {
+            background: var(--bg-light);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .service-item:first-child {
-            border-top: 1px solid rgba(242, 237, 230, 0.1);
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: var(--secondary);
+            transition: var(--transition);
+            z-index: -1;
         }
 
-        .service-item h3 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            text-transform: capitalize;
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+            border-color: transparent;
+        }
+
+        .service-card:hover::before {
+            height: 100%;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-icon,
+        .service-card:hover h3,
+        .service-card:hover p {
+            color: white;
+        }
+
+        /* Portfolio Section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            background: var(--bg-white);
+            transition: var(--transition);
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 250px;
+            background-color: #cbd5e1;
+            position: relative;
+        }
+
+        .portfolio-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-content {
+            padding: 1.5rem;
+        }
+
+        .portfolio-tag {
+            font-size: 0.875rem;
+            color: var(--secondary);
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            transition: color 0.3s;
+            display: inline-block;
         }
 
-        .service-item:hover h3 {
-            color: var(--accent);
+        /* Testimonial Section */
+        .testimonials {
+            background-color: var(--primary);
+            color: white;
         }
 
-        .service-item p {
-            font-size: 1.1rem;
-            color: var(--text-muted-light);
-            font-weight: 300;
-            text-transform: capitalize;
+        .testimonials .section-header h2,
+        .testimonials .section-header p {
+            color: white;
         }
 
-        /* Results Section */
-        .results {
-            padding: 10vw 5vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 6rem;
-            background: transparent;
+        .testimonials .section-header p {
+            color: #94a3b8;
         }
 
-        .stat {
-            flex: 1;
-            min-width: 250px;
-            text-align: center;
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
-        .stat-num {
-            font-size: clamp(4rem, 10vw, 8rem);
-            font-family: 'Ubuntu', sans-serif;
-            color: var(--text-main);
-            line-height: 1;
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stars {
+            color: #fbbf24;
             margin-bottom: 1rem;
         }
 
-        .stat-label {
-            font-size: 1.1rem;
-            color: var(--text-muted-light);
-            text-transform: capitalize;
+        .quote {
+            font-size: 1.125rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            color: #e2e8f0;
         }
 
-        /* Process Section */
-        .process {
-            overflow: hidden;
-            padding: 10vw 0;
-            background: transparent;
-        }
-
-        .process-container {
+        .client-info {
             display: flex;
-            width: max-content;
-            padding: 0 5vw;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .process-step {
-            width: 60vw;
-            min-width: 400px;
-            padding-right: 5vw;
-            flex-shrink: 0;
-        }
-
-        .process-step h4 {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            text-transform: capitalize;
-        }
-
-        .process-step p {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-family: 'Ubuntu', sans-serif;
-            line-height: 1.2;
-            text-transform: capitalize;
-        }
-
-        /* Team Section */
-        .team {
-            padding: 10vw 5vw;
+        .client-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
             display: flex;
+            align-items: center;
             justify-content: center;
-            text-align: center;
-            background: transparent;
+            font-weight: bold;
+            font-size: 1.25rem;
         }
 
-        .team p {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-family: 'Ubuntu', sans-serif;
-            max-width: 900px;
-            text-transform: capitalize;
-            color: var(--text-muted-light);
-            line-height: 1.4;
+        .client-details h4 {
+            color: white;
+            margin: 0;
+            font-size: 1rem;
         }
 
-        .team p span {
-            color: var(--text-main);
+        .client-details span {
+            color: #94a3b8;
+            font-size: 0.875rem;
         }
 
         /* Pricing Section */
-        .pricing {
-            padding: 120px 5vw;
-            background: transparent;
-        }
-
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .pricing-header h2 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            text-transform: capitalize;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-header p {
-            font-size: 1.1rem;
-            color: var(--text-muted-light);
-            text-transform: capitalize;
-        }
-
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            align-items: center;
         }
 
         .pricing-card {
-            border: 1px solid rgba(242, 237, 230, 0.1);
-            padding: 3rem 2.5rem;
+            background: var(--bg-white);
+            padding: 3rem 2rem;
             border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            text-align: center;
             position: relative;
-            background-color: rgba(8, 8, 8, 0.4);
-            backdrop-filter: blur(12px);
-            opacity: 0;
-            transform: translateY(30px);
         }
 
         .pricing-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(242, 237, 230, 0.3);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
         }
 
         .pricing-card.featured {
-            border-color: var(--accent);
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
         }
 
         .pricing-card.featured:hover {
-            border-color: var(--accent);
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .pricing-card.featured h3,
+        .pricing-card.featured .price {
+            color: white;
         }
 
         .popular-badge {
             position: absolute;
-            top: -14px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: var(--accent);
-            color: #000;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 500;
-            text-transform: capitalize;
-            letter-spacing: 0.05em;
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
 
-        .card-name {
-            font-size: 24px;
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-transform: capitalize;
-            color: var(--text-main);
+        .pricing-card h3 {
+            margin-bottom: 1rem;
         }
 
-        .card-tag {
-            font-size: 13px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #999999;
+        .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
             margin-bottom: 2rem;
-            text-transform: capitalize;
         }
 
-        .card-price {
-            font-size: 36px;
-            font-family: 'Ubuntu', sans-serif;
-            font-weight: 700;
-            margin-bottom: 2.5rem;
-            text-transform: capitalize;
-            color: var(--text-main);
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 2rem;
         }
 
-        .card-services {
-            list-style: none;
-            margin-bottom: 3rem;
-            flex-grow: 1;
-        }
-
-        .card-services li {
-            font-size: 14px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #bbbbbb;
+        .pricing-features li {
             margin-bottom: 1rem;
             display: flex;
-            text-transform: capitalize;
-            line-height: 1.5;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .card-services li::before {
-            content: '—';
-            margin-right: 0.75rem;
-            color: #666;
-        }
-
-        .btn-pricing {
-            width: 100%;
-            padding: 1.25rem;
-            text-align: center;
-            border-radius: 30px;
-            font-family: 'Ubuntu', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: capitalize;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--text-main);
-            cursor: none;
-        }
-
-        .btn-pricing:hover {
-            background-color: var(--text-main);
-            color: var(--bg);
-        }
-
-        .pricing-card.featured .btn-pricing {
-            background-color: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-        }
-
-        .pricing-card.featured .btn-pricing:hover {
-            background-color: transparent;
+        .pricing-features li i {
             color: var(--accent);
         }
 
-        .pricing-footer {
-            text-align: center;
-            margin-top: 5rem;
+        /* Contact Section */
+        .contact {
+            background: var(--bg-white);
         }
 
-        .pricing-footer p {
-            color: var(--text-muted-light);
-            font-size: 14px;
-            margin-bottom: 1rem;
-            text-transform: capitalize;
-        }
-
-        .pricing-footer a {
-            color: var(--text-main);
-            text-decoration: underline;
-            text-decoration-color: var(--text-muted);
-            text-underline-offset: 6px;
-            font-size: 14px;
-            transition: color 0.3s;
-            text-transform: capitalize;
-        }
-
-        .pricing-footer a:hover {
-            color: var(--accent);
-            text-decoration-color: var(--accent);
-        }
-
-        /* Book A Call Section */
-        .book-call {
-            padding: 100px 5vw;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: transparent;
-        }
-
-        .book-call h2 {
-            font-size: clamp(3rem, 6vw, 5rem);
-            margin-bottom: 4rem;
-            text-transform: capitalize;
-        }
-
-        .contact-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 5rem;
-            align-items: center;
-        }
-
-        .contact-list a {
-            font-size: 15px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #aaaaaa;
-            text-transform: capitalize;
-            transition: color 0.3s;
-            display: inline-block;
-        }
-
-        .contact-list a:hover {
-            color: var(--text-main);
-        }
-
-        .btn-cta {
-            display: inline-block;
-            padding: 1.25rem 3.5rem;
-            border: 1px solid var(--text-main);
-            border-radius: 50px;
-            color: var(--text-main);
-            font-family: 'Ubuntu', sans-serif;
-            text-transform: capitalize;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-size: 1.1rem;
-            backdrop-filter: blur(5px);
-        }
-
-        .btn-cta:hover {
-            background-color: var(--text-main);
-            color: var(--bg);
-        }
-
-        /* New Contact Split Section */
-        .contact-split {
-            padding: 120px 5vw;
+        .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            background-color: transparent;
+            gap: 4rem;
         }
 
-        @media (max-width: 768px) {
-            .contact-split {
-                grid-template-columns: 1fr;
-                gap: 60px;
-            }
+        .contact-info h2 {
+            margin-bottom: 1rem;
         }
 
-        .contact-left h2 {
-            font-size: clamp(3.5rem, 8vw, 5rem);
-            color: var(--text-main);
-            text-transform: capitalize;
-            margin: 0;
-            line-height: 1;
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
         }
 
         .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 3rem;
-            opacity: 0;
+            background: var(--bg-light);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
         }
 
-        .contact-form input,
-        .contact-form textarea {
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
             width: 100%;
-            padding: 1rem 0;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(242, 237, 230, 0.3);
-            color: var(--text-main);
-            font-family: 'Ubuntu', sans-serif;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
             font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
             outline: none;
-            transition: border-color 0.3s;
-            text-transform: capitalize;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
 
-        .contact-form textarea {
-            min-height: 100px;
+        textarea.form-control {
             resize: vertical;
+            min-height: 120px;
         }
 
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-bottom-color: var(--accent);
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
         }
 
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-            color: var(--text-muted-light);
+        .cta h2 {
+            color: white;
+            margin-bottom: 1rem;
         }
 
-        .contact-form .btn-cta {
-            margin-top: 1rem;
-            align-self: flex-start;
-            background: transparent;
-            cursor: none;
-        }
-
-        .contact-right {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .contact-label {
-            font-size: 12px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #777777;
-            text-transform: capitalize;
-            letter-spacing: 0.05em;
-        }
-
-        .contact-value {
-            font-size: 18px;
-            font-family: 'Ubuntu', sans-serif;
-            color: var(--text-main);
-            transition: color 0.2s ease;
-            text-transform: capitalize;
-        }
-
-        .contact-value:hover {
-            color: var(--accent);
+        .cta p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
         }
 
         /* Footer */
         footer {
-            border-top: 1px solid rgba(242, 237, 230, 0.1);
-            padding: 32px 60px;
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-about .logo {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-social {
             display: flex;
-            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-            background: transparent;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
         }
 
-        @media (max-width: 768px) {
-            footer {
-                padding: 32px 5vw;
-                flex-direction: column;
-                text-align: center;
-            }
+        .footer-social a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
         }
 
-        .footer-text {
-            font-size: 13px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #777777;
-            text-transform: capitalize;
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 1.5rem;
         }
 
-        .footer-links {
-            display: flex;
-            gap: 32px;
+        .footer-links li {
+            margin-bottom: 0.75rem;
         }
 
         .footer-links a {
-            font-size: 13px;
-            font-family: 'Ubuntu', sans-serif;
-            color: #777777;
-            transition: color 0.2s;
-            text-transform: capitalize;
-            text-decoration: none;
+            transition: var(--transition);
         }
 
         .footer-links a:hover {
-            color: var(--text-main);
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: white;
+            box-shadow: 0 15px 25px -5px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Animations */
+        .animate-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .animate-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 250px;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                padding: 6rem 2rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links .btn {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                z-index: 1001;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Video Background -->
-    <video autoplay loop muted playsinline id="bg-video">
-        <source
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
-            type="video/mp4">
-    </video>
-    <div id="bg-overlay"></div>
-
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-
-    <!-- Loader -->
-    <div id="loader">
-        <div class="brand-text" id="loader-text">
-            <span>s</span><span>c</span><span>a</span><span>l</span><span>e</span><span>m</span><span>e</span><span>d</span><span>i</span><span>a</span>
+    <!-- Header / Navbar -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-chart-line"></i>
+                ScaleMedia
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact" class="btn btn-primary">Get Free Consultation</a></li>
+            </ul>
         </div>
-        <div class="progress" id="loader-progress"></div>
-    </div>
+    </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <h1 id="hero-headline">
-            <span class="hl-line">your content</span>
-            <span class="hl-line">isn't the problem.</span>
-            <span class="hl-line">your strategy is.</span>
-        </h1>
-        <p id="hero-subline">we fix the system behind your social media.</p>
-        <div>
-            <a href="#contact" class="cta-link" data-hover>let's talk &rarr;</a>
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content animate-up">
+                <h1>your content isn't the problem. your strategy is.</h1>
+                <p>we fix the system behind your social media.</p>
+                <div class="hero-btns">
+                    <a href="#contact" class="btn btn-primary">Get Free Consultation</a>
+                    <a href="#services" class="btn btn-outline">View Services</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Scroll Narrative -->
-    <section class="narrative" id="narrative-section">
-        <div class="narrative-text n-beat">You're Posting Every Day</div>
-        <div class="narrative-text n-beat">And Getting Nothing Back</div>
-        <div class="narrative-text n-beat">Because Content Without Strategy Is Just Noise</div>
-        <div class="narrative-text n-beat" style="color: var(--accent)">Scalemedia builds the system that turns
-            attention into revenue</div>
+    <!-- About Section -->
+    <section id="about">
+        <div class="container about-grid">
+            <div class="about-image animate-up">
+                <!-- Using a placeholder image for agency team/office -->
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    alt="ScaleMedia Team">
+            </div>
+            <div class="about-content animate-up">
+                <h2>Who is ScaleMedia?</h2>
+                <p>scalemedia is a small team of strategists, creators, and media buyers obsessed with one thing —
+                    growth that compounds.</p>
+                <p>we go deep into your brand, build the system, create, publish, optimise, and push what works.</p>
+
+                <div class="highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h3>step 1: audit</h3>
+                            <p>we go deep into your brand</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+                        <div>
+                            <h3>step 2: strategy</h3>
+                            <p>we build the system</p>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <div>
+                            <h3>step 3 & 4: execute and scale</h3>
+                            <p>we create, publish, optimise, and push what works</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Services Section -->
-    <section class="services">
-        <div class="services-grid">
-            <div class="service-item">
-                <h3>social media strategy</h3>
-                <p>data-driven roadmaps for growth</p>
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Our Services</h2>
+                <p>Comprehensive social media solutions designed to scale your brand and generate high-quality leads.
+                </p>
             </div>
-            <div class="service-item">
-                <h3>content production</h3>
-                <p>high-quality visuals and video</p>
-            </div>
-            <div class="service-item">
-                <h3>content writing</h3>
-                <p>captions, blogs, ad copy</p>
-            </div>
-            <div class="service-item">
-                <h3>content strategy</h3>
-                <p>what to post, when, and why</p>
-            </div>
-            <div class="service-item">
-                <h3>brand positioning</h3>
-                <p>stand out in crowded markets</p>
-            </div>
-            <div class="service-item">
-                <h3>paid ads (meta & google)</h3>
-                <p>scalable acquisition systems</p>
-            </div>
-            <div class="service-item">
-                <h3>seo</h3>
-                <p>search engine visibility</p>
-            </div>
-            <div class="service-item">
-                <h3>web design & development</h3>
-                <p>high-converting landing pages</p>
+
+            <div class="services-grid">
+                <!-- 1 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-mobile-screen service-icon"></i>
+                    <h3>social media strategy</h3>
+                    <p>data-driven roadmaps for growth</p>
+                </div>
+                <!-- 2 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-pen-nib service-icon"></i>
+                    <h3>content production</h3>
+                    <p>high-quality visuals and video</p>
+                </div>
+                <!-- 3 -->
+                <div class="service-card animate-up">
+                    <i class="fa-brands fa-instagram service-icon"></i>
+                    <h3>content writing</h3>
+                    <p>captions, blogs, ad copy</p>
+                </div>
+                <!-- 4 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-bullhorn service-icon"></i>
+                    <h3>paid ads (meta & google)</h3>
+                    <p>scalable acquisition systems</p>
+                </div>
+                <!-- 5 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-magnet service-icon"></i>
+                    <h3>content strategy</h3>
+                    <p>what to post, when, and why</p>
+                </div>
+                <!-- 6 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-palette service-icon"></i>
+                    <h3>brand positioning</h3>
+                    <p>stand out in crowded markets</p>
+                </div>
+                <!-- 7 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-video service-icon"></i>
+                    <h3>seo</h3>
+                    <p>search engine visibility</p>
+                </div>
+                <!-- 8 -->
+                <div class="service-card animate-up">
+                    <i class="fa-solid fa-user-tie service-icon"></i>
+                    <h3>web design & development</h3>
+                    <p>high-converting landing pages</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Results Section -->
-    <section class="results" id="results-section">
-        <div class="stat">
-            <div class="stat-num" data-target="10">0</div>
-            <div class="stat-label">average reach growth</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num" data-target="3x">0</div>
-            <div class="stat-label">avg engagement rate increase</div>
-        </div>
-        <div class="stat">
-            <div class="stat-num" data-target="10+">0</div>
-            <div class="stat-label">brands scaled</div>
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Our Portfolio</h2>
+                <p>Take a look at how we've helped businesses transform their digital presence and scale their revenue.
+                </p>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- Project 1 -->
+                <div class="portfolio-card animate-up">
+                    <div class="portfolio-img">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Instagram Growth">
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Instagram Growth</span>
+                        <h3>Lifestyle Brand Scaling</h3>
+                        <p>Grew account from 2k to 50k followers in 6 months using viral Reel strategies.</p>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="portfolio-card animate-up">
+                    <div class="portfolio-img">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Real Estate Marketing">
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Real Estate Marketing</span>
+                        <h3>Luxury Properties Repo</h3>
+                        <p>Generated 150+ highly qualified leads for luxury apartments via Meta Ads.</p>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="portfolio-card animate-up">
+                    <div class="portfolio-img">
+                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Personal Brand Growth">
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Personal Brand Growth</span>
+                        <h3>CEO Thought Leadership</h3>
+                        <p>Positioned startup founder as an industry expert, resulting in 3 major speaking gigs.</p>
+                    </div>
+                </div>
+                <!-- Project 4 -->
+                <div class="portfolio-card animate-up">
+                    <div class="portfolio-img">
+                        <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Local Business Marketing">
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Local Business Marketing</span>
+                        <h3>Downtown Cafe Launch</h3>
+                        <p>Drove 500+ foot traffic visitors on opening weekend through local targeted campaigns.</p>
+                    </div>
+                </div>
+                <!-- Project 5 -->
+                <div class="portfolio-card animate-up">
+                    <div class="portfolio-img">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="E-commerce Growth">
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">E-commerce Growth</span>
+                        <h3>Fashion Boutique Sales</h3>
+                        <p>Achieved a 4.5x ROAS (Return on Ad Spend) through optimized conversion funnels.</p>
+                    </div>
+                </div>
+                <!-- Project 6 -->
+                <div class="portfolio-card animate-up">
+                    <div class="portfolio-img">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Lead Generation Campaign">
+                    </div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Lead Generation Campaign</span>
+                        <h3>B2B Software Agency</h3>
+                        <p>Captured 200+ demo bookings via LinkedIn and Google Ads integration.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Process Section -->
-    <section class="process" id="process-section">
-        <div class="process-container" id="process-container">
-            <div class="process-step">
-                <h4>step 1: audit</h4>
-                <p>we go deep into your brand</p>
+    <!-- Testimonial Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Client Success Stories</h2>
+                <p>Don't just take our word for it. Here's what our partners have to say about working with ScaleMedia.
+                </p>
             </div>
-            <div class="process-step">
-                <h4>step 2: strategy</h4>
-                <p>we build the system</p>
-            </div>
-            <div class="process-step">
-                <h4>step 3: execute</h4>
-                <p>we create, publish, optimise</p>
-            </div>
-            <div class="process-step">
-                <h4>step 4: scale</h4>
-                <p>we push what works</p>
+
+            <div class="testimonial-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card animate-up">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="quote">"ScaleMedia completely transformed our local clinic's online presence. We are now
+                        booked out 3 weeks in advance thanks to their lead generation strategies."</p>
+                    <div class="client-info">
+                        <div class="client-avatar">A</div>
+                        <div class="client-details">
+                            <h4>Dr. Amit Sharma</h4>
+                            <span>Local Clinic Owner</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card animate-up">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="quote">"Working with an agency halfway across the world felt risky, but the communication
+                        and results have been flawless. Our ROAS has never been higher."</p>
+                    <div class="client-info">
+                        <div class="client-avatar">S</div>
+                        <div class="client-details">
+                            <h4>Sarah Jenkins</h4>
+                            <span>E-commerce Director, UK</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card animate-up">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="quote">"As a tech startup, we needed fast growth. ScaleMedia delivered a solid content and
+                        ad strategy that helped us close our seed funding round with confidence."</p>
+                    <div class="client-info">
+                        <div class="client-avatar">R</div>
+                        <div class="client-details">
+                            <h4>Rahul Desai</h4>
+                            <span>SaaS Startup Founder</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="team">
-        <p>scalemedia is a small team of strategists, creators, and media buyers obsessed with one thing — <span>growth
-                that compounds.</span></p>
     </section>
 
     <!-- Pricing Section -->
-    <section class="pricing">
-        <div class="pricing-header">
-            <h2>simple pricing. serious results.</h2>
-            <p>no retainers that do nothing. pick the system that fits where you are.</p>
-        </div>
-
-        <div class="pricing-grid">
-            <!-- Card 1 -->
-            <div class="pricing-card">
-                <div class="card-name">starter</div>
-                <div class="card-tag">for brands just getting started</div>
-                <div class="card-price">₹5,000 / month</div>
-                <ul class="card-services">
-                    <li>brand positioning</li>
-                    <li>content strategy</li>
-                    <li>instagram management</li>
-                    <li>4 posts / reels per month</li>
-                    <li>basic growth setup</li>
-                    <li>1 content edit per week</li>
-                    <li>basic audience targeting</li>
-                    <li>monthly check-in call</li>
-                </ul>
-                <a href="#contact" class="btn-pricing" data-hover>get started &rarr;</a>
+    <section id="pricing">
+        <div class="container">
+            <div class="section-header animate-up">
+                <h2>Transparent Pricing</h2>
+                <p>Invest in your growth. Choose a plan that fits your business goals and budget.</p>
             </div>
 
-            <!-- Card 2 -->
-            <div class="pricing-card featured">
-                <div class="popular-badge">most popular</div>
-                <div class="card-name">growth</div>
-                <div class="card-tag">for brands ready to dominate</div>
-                <div class="card-price">₹11,999 / month</div>
-                <ul class="card-services">
-                    <li>everything in starter</li>
-                    <li>instagram + facebook management</li>
-                    <li>12–16 posts per month (6–8 reels + 6–8 creatives)</li>
-                    <li>advanced reel editing (hooks, trends, transitions)</li>
-                    <li>full content calendar & strategy</li>
-                    <li>niche research & competitor analysis</li>
-                    <li>engaging captions + strong CTAs</li>
-                    <li>custom hashtag strategy</li>
-                    <li>posting time optimisation</li>
-                    <li>basic comment management</li>
-                    <li>monthly performance report</li>
-                </ul>
-                <a href="#contact" class="btn-pricing" data-hover>let's scale &rarr;</a>
+            <div class="pricing-grid">
+                <!-- Starter -->
+                <div class="pricing-card animate-up">
+                    <h3>Starter</h3>
+                    <div class="price">5000/-</div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-check"></i> brand positioning</li>
+                        <li><i class="fa-solid fa-check"></i> content strategy</li>
+                        <li><i class="fa-solid fa-check"></i> instagram management</li>
+                        <li><i class="fa-solid fa-check"></i> 4 posts / reels per month</li>
+                        <li><i class="fa-solid fa-check"></i> basic growth setup</li>
+                        <li><i class="fa-solid fa-check"></i> 1 content edit per week</li>
+                        <li><i class="fa-solid fa-check"></i> basic audience targeting</li>
+                        <li><i class="fa-solid fa-check"></i> monthly check-in call</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline" style="width: 100%;">Get Started</a>
+                </div>
+                <!-- Growth -->
+                <div class="pricing-card featured animate-up">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Growth</h3>
+                    <div class="price">11999/-</div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-check"></i> everything in starter</li>
+                        <li><i class="fa-solid fa-check"></i> instagram + facebook management</li>
+                        <li><i class="fa-solid fa-check"></i> 12–16 posts per month (6–8 reels + 6–8 creatives)</li>
+                        <li><i class="fa-solid fa-check"></i> advanced reel editing (hooks, trends, transitions)</li>
+                        <li><i class="fa-solid fa-check"></i> full content calendar & strategy</li>
+                        <li><i class="fa-solid fa-check"></i> niche research & competitor analysis</li>
+                        <li><i class="fa-solid fa-check"></i> engaging captions + strong CTAs</li>
+                        <li><i class="fa-solid fa-check"></i> custom hashtag strategy</li>
+                        <li><i class="fa-solid fa-check"></i> posting time optimisation</li>
+                        <li><i class="fa-solid fa-check"></i> basic comment management</li>
+                        <li><i class="fa-solid fa-check"></i> monthly performance report</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary"
+                        style="width: 100%; background: white; color: var(--primary);">Let's Scale</a>
+                </div>
+                <!-- Premium -->
+                <div class="pricing-card animate-up">
+                    <h3>Scale</h3>
+                    <div class="price">15000+</div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-check"></i> everything in growth</li>
+                        <li><i class="fa-solid fa-check"></i> paid ads management (Meta — Instagram + Facebook)</li>
+                        <li><i class="fa-solid fa-check"></i> seo basics & on-page optimisation</li>
+                        <li><i class="fa-solid fa-check"></i> content writing (captions, blogs, ad copy)</li>
+                        <li><i class="fa-solid fa-check"></i> multi-platform social media strategy</li>
+                        <li><i class="fa-solid fa-check"></i> web landing page design (1 per quarter)</li>
+                        <li><i class="fa-solid fa-check"></i> weekly performance reporting & optimisation</li>
+                        <li><i class="fa-solid fa-check"></i> dedicated account strategist</li>
+                        <li><i class="fa-solid fa-check"></i> priority response & support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline" style="width: 100%;">Apply Now</a>
+                </div>
             </div>
-
-            <!-- Card 3 -->
-            <div class="pricing-card">
-                <div class="card-name">scale</div>
-                <div class="card-tag">for brands ready to dominate</div>
-                <div class="card-price">₹15,000+ / month</div>
-                <ul class="card-services">
-                    <li>everything in growth</li>
-                    <li>paid ads management (Meta — Instagram + Facebook)</li>
-                    <li>seo basics & on-page optimisation</li>
-                    <li>content writing (captions, blogs, ad copy)</li>
-                    <li>multi-platform social media strategy</li>
-                    <li>web landing page design (1 per quarter)</li>
-                    <li>weekly performance reporting & optimisation</li>
-                    <li>dedicated account strategist</li>
-                    <li>priority response & support</li>
-                </ul>
-                <a href="#contact" class="btn-pricing" data-hover>apply now &rarr;</a>
-            </div>
-        </div>
-
-        <div class="pricing-footer">
-            <p>all plans are month-to-month. no lock-in contracts.</p>
-            <a href="#contact" data-hover>not sure which plan? &rarr; book a free audit call</a>
         </div>
     </section>
 
-    <!-- Book A Call Section -->
-    <section class="book-call">
-        <h2>ready to scale?</h2>
-        <div class="contact-list">
-            <a href="mailto:scalemedia2214@gmail.com" data-hover>email — scalemedia2214@gmail.com</a>
-            <a href="tel:+917021850759" data-hover>call — +91 70218 50759</a>
-            <a href="https://wa.me/918591725750" data-hover target="_blank">whatsapp — +91 85917 25750</a>
-            <a href="https://www.instagram.com/scalemedia_1/" data-hover target="_blank">instagram — @scalemedia_1</a>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-info animate-up">
+                    <h2>Let's Scale Your Business Together</h2>
+                    <p>Ready to dominate your market? Fill out the form or reach out directly to schedule your free
+                        consultation.</p>
+
+                    <div style="margin-top: 3rem;">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4>Email Us</h4>
+                                <p>scalemedia2214@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4>WhatsApp / Phone</h4>
+                                <p>+91 85917 25750 <br> +91 70218 50759</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4>Location</h4>
+                                <p>India (Serving Worldwide)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form animate-up">
+                    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="leadForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" class="form-control" required
+                                placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" class="form-control" required
+                                placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" required
+                                placeholder="+1 234 567 8900">
+                        </div>
+                        <div class="form-group">
+                            <label for="business">Business Name</label>
+                            <input type="text" id="business" name="business" class="form-control"
+                                placeholder="Your Company Ltd.">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">How can we help you?</label>
+                            <textarea id="message" name="message" class="form-control"
+                                placeholder="Tell us about your goals..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Inquiry</button>
+                        <p id="form-status"
+                            style="margin-top: 1rem; text-align: center; display: none; color: var(--accent); font-weight: 600;">
+                            Thank you! ScaleMedia will contact you soon.
+                        </p>
+                    </form>
+                </div>
+            </div>
         </div>
-        <a href="#contact" class="btn-cta" data-hover>book a call</a>
     </section>
 
-    <!-- Contact Split Section -->
-    <section class="contact-split" id="contact">
-        <div class="contact-left">
-            <h2 id="split-title">let's talk.</h2>
-            <form action="https://formspree.io/f/mvzlwbgn" method="POST" class="contact-form" id="contact-form">
-                <input type="text" name="name" placeholder="your name" required data-hover>
-                <input type="email" name="email" placeholder="your email" required data-hover>
-                <textarea name="message" placeholder="how can we help?" required data-hover></textarea>
-                <button type="submit" class="btn-cta" data-hover>send message</button>
-            </form>
-        </div>
-        <div class="contact-right" id="split-details">
-            <div class="contact-item">
-                <span class="contact-label">email</span>
-                <a href="mailto:scalemedia2214@gmail.com" class="contact-value" data-hover>scalemedia2214@gmail.com</a>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">call us</span>
-                <a href="tel:+917021850759" class="contact-value" data-hover>+91 70218 50759</a>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">whatsapp</span>
-                <a href="https://wa.me/918591725750" class="contact-value" data-hover target="_blank">+91 85917
-                    25750</a>
-            </div>
-            <div class="contact-item">
-                <span class="contact-label">instagram</span>
-                <a href="https://www.instagram.com/scalemedia_1/" class="contact-value" data-hover
-                    target="_blank">@scalemedia_1</a>
-            </div>
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container animate-up">
+            <h2>Ready to Scale Your Business?</h2>
+            <p>Stop leaving money on the table. Let's build a digital presence that converts.</p>
+            <a href="#contact" class="btn btn-primary"
+                style="background: white; color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.2);">Book Free
+                Call</a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-text">scalemedia &copy; 2026</div>
-        <div class="footer-text">mumbai, india</div>
-        <div class="footer-links">
-            <a href="https://www.instagram.com/scalemedia_1/" data-hover target="_blank">instagram</a>
-            <a href="mailto:scalemedia2214@gmail.com" data-hover>email</a>
-            <a href="https://wa.me/918591725750" data-hover target="_blank">whatsapp</a>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="#" class="logo">
+                        <i class="fa-solid fa-chart-line"></i>
+                        ScaleMedia
+                    </a>
+                    <p>We Scale Brands with Social Media. Elevating local businesses and international clients through
+                        strategic content and ads.</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/scalemedia_1/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Social Media Management</a></li>
+                        <li><a href="#services">Content Creation</a></li>
+                        <li><a href="#services">Paid Ads</a></li>
+                        <li><a href="#services">Lead Generation</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>India (Serving Worldwide)</li>
+                        <li>scalemedia2214@gmail.com</li>
+                        <li>+91 85917 25750</li>
+                        <li>+91 70218 50759</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="year"></span> ScaleMedia. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918591725750" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
     <script>
-        // Register ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        const hoverElements = document.querySelectorAll('a, button, [data-hover]');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        // Sticky Navbar
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('sticky');
+            } else {
+                header.classList.remove('sticky');
+            }
         });
 
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Change icon
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
         });
 
-        // Loader
-        const tlLoader = gsap.timeline();
+        // Close mobile menu when link is clicked
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            });
+        });
 
-        tlLoader.to('#loader-text span', {
-            opacity: 1,
-            y: 0,
-            duration: 0.1,
-            stagger: 0.05,
-            ease: 'power2.out'
-        })
-            .to('#loader-progress', {
-                width: '100%',
-                duration: 1,
-                ease: 'power2.inOut'
-            })
-            .to('#loader', {
-                opacity: 0,
-                duration: 0.5,
-                ease: 'power2.inOut',
-                onComplete: () => {
-                    document.getElementById('loader').style.display = 'none';
-                    initHeroAnimations();
+        // Scroll Animations using Intersection Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    // Optional: stop observing once animated
+                    // observer.unobserve(entry.target);
                 }
             });
+        }, observerOptions);
 
-        function initHeroAnimations() {
-            const tlHero = gsap.timeline();
-            tlHero.to('.hl-line', {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.2,
-                ease: 'power3.out'
-            })
-                .to('#hero-subline', {
-                    opacity: 1,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                }, "-=0.4")
-                .to('.cta-link', {
-                    opacity: 1,
-                    duration: 0.5,
-                    ease: 'power2.out'
-                }, "-=0.2");
-        }
+        const animatedElements = document.querySelectorAll('.animate-up');
+        animatedElements.forEach(el => observer.observe(el));
 
-        // Scroll Narrative
-        const narrativeBeats = gsap.utils.toArray('.n-beat');
+        // Formspree Handling (Basic UX enhancement without preventing default redirect unless using ajax)
+        const form = document.getElementById('leadForm');
+        const formStatus = document.getElementById('form-status');
 
-        const tlNarrative = gsap.timeline({
-            scrollTrigger: {
-                trigger: '#narrative-section',
-                start: 'top top',
-                end: '+=300%',
-                pin: true,
-                scrub: 1
+        form.addEventListener("submit", async function (event) {
+            // Check if user changed the YOUR_FORM_ID
+            const actionUrl = form.getAttribute('action');
+            if (actionUrl.includes('YOUR_FORM_ID')) {
+                event.preventDefault();
+                alert("Please replace 'YOUR_FORM_ID' in the HTML with your actual Formspree endpoint to receive messages.");
+                return;
             }
-        });
 
-        narrativeBeats.forEach((beat, i) => {
-            tlNarrative.fromTo(beat,
-                { opacity: 0, clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)' },
-                { opacity: 1, clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', duration: 1, ease: 'power2.inOut' }
-            );
-            if (i !== narrativeBeats.length - 1) {
-                tlNarrative.to(beat, { opacity: 0, duration: 0.5, ease: 'power2.inOut' });
-            }
-        });
-
-        // Services
-        gsap.utils.toArray('.service-item').forEach(item => {
-            gsap.to(item, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: 'top 85%'
-                },
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                ease: 'power3.out'
+            // Optional: You can handle the form submission via AJAX here if desired,
+            // But Formspree's default behavior handles redirect.
+            // If using AJAX:
+            event.preventDefault();
+            const data = new FormData(event.target);
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    formStatus.style.display = "block";
+                    formStatus.textContent = "Thank you! ScaleMedia will contact you soon.";
+                    form.reset();
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            formStatus.style.display = "block";
+                            formStatus.style.color = "red";
+                            formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+                        } else {
+                            formStatus.style.display = "block";
+                            formStatus.style.color = "red";
+                            formStatus.textContent = "Oops! There was a problem submitting your form";
+                        }
+                    })
+                }
+            }).catch(error => {
+                formStatus.style.display = "block";
+                formStatus.style.color = "red";
+                formStatus.textContent = "Oops! There was a problem submitting your form";
             });
         });
-
-        // Results Counting
-        const resultsSection = document.getElementById('results-section');
-        ScrollTrigger.create({
-            trigger: resultsSection,
-            start: 'top 80%',
-            once: true,
-            onEnter: () => {
-                const targets = document.querySelectorAll('.stat-num');
-                targets.forEach(t => {
-                    const endValue = parseInt(t.getAttribute('data-target'));
-                    gsap.to(t, {
-                        innerHTML: endValue,
-                        duration: 2,
-                        snap: { innerHTML: 1 },
-                        ease: 'power2.out',
-                        onUpdate: function () {
-                            let val = Math.round(this.targets()[0].innerHTML);
-                            if (endValue === 10) t.innerHTML = val + 'x';
-                            else if (endValue === 3) t.innerHTML = val + 'x';
-                            else if (endValue === 47) t.innerHTML = val + '+';
-                            else t.innerHTML = val;
-                        }
-                    });
-                });
-            }
-        });
-
-        // Process Horizontal Scroll
-        const processContainer = document.getElementById('process-container');
-        gsap.to(processContainer, {
-            x: () => -(processContainer.scrollWidth - window.innerWidth),
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#process-section",
-                pin: true,
-                scrub: 1,
-                end: () => "+=" + (processContainer.scrollWidth - window.innerWidth)
-            }
-        });
-
-        // Pricing Stagger
-        gsap.to('.pricing-card', {
-            scrollTrigger: {
-                trigger: '.pricing-grid',
-                start: 'top 80%'
-            },
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out'
-        });
-
-        // Contact Split Animation
-        const contactSplitTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.contact-split',
-                start: 'top 80%'
-            }
-        });
-
-        contactSplitTl.fromTo('#split-title',
-            { opacity: 0, x: -50 },
-            { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' }
-        ).fromTo('.contact-form',
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-            "-=0.4"
-        ).fromTo('.contact-item',
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out' },
-            "-=0.4"
-        );
-
     </script>
 </body>
 
